@@ -1,0 +1,67 @@
+﻿@inherits CreateApiScopeDialogModel
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
+            Форма добавления обслати доступа
+        </MudText>
+    </TitleContent>
+
+    <DialogContent>
+        <MudContainer MaxWidth="MaxWidth.Medium">
+            <MudForm @ref="ModelForm" Model="Model">
+                <MudStack Spacing="2">
+                    <MudStack Spacing="3">
+                        <MudTextField @bind-Value="@Model.Name"
+                                      Label="Наименование"
+                                      AutoFocus="true"
+                                      For="() => Model.Name"
+                                      Validation="Model.Validator.IsValid"
+                                      T="string"
+                                      InputMode="InputMode.text" />
+
+                        <MudTextField @bind-Value="@Model.DisplayName"
+                                      Label="Наименование (отображение)" />
+
+                        <MudTextField @bind-Value="@Model.Description"
+                                      Label="Описание" />
+                    </MudStack>
+
+                    <MudStack Spacing="3">
+                        <MudItem>
+                            <MudText Typo="Typo.body1">Область обязательна?</MudText>
+
+                            <MudRadioGroup @bind-SelectedOption="Model.Required">
+                                <MudRadio Color="Color.Primary" Option="@(true)">Да</MudRadio>
+                                <MudRadio Color="Color.Primary" Option="@(false)">Нет</MudRadio>
+                            </MudRadioGroup>
+                        </MudItem>
+
+                        <MudItem>
+                            <MudText Typo="Typo.body1">Показать в документе Discovery?</MudText>
+
+                            <MudRadioGroup @bind-SelectedOption="Model.ShowInDiscoveryDocument">
+                                <MudRadio Color="Color.Primary" Option="@(true)">Да</MudRadio>
+                                <MudRadio Color="Color.Primary" Option="@(false)">Нет</MudRadio>
+                            </MudRadioGroup>
+                        </MudItem>
+
+                        <MudItem>
+                            <MudText Typo="Typo.body1">Подчеркивать?</MudText>
+
+                            <MudRadioGroup @bind-SelectedOption="Model.Emphasize">
+                                <MudRadio Color="Color.Primary" Option="@(true)">Да</MudRadio>
+                                <MudRadio Color="Color.Primary" Option="@(false)">Нет</MudRadio>
+                            </MudRadioGroup>
+                        </MudItem>
+                    </MudStack>
+                </MudStack>
+            </MudForm>
+        </MudContainer>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton Color="Color.Primary" Disabled="!ModelForm.IsValid" Variant="Variant.Filled" OnClick="CreateApiScopeAsync">Создать</MudButton>
+    </DialogActions>
+</MudDialog>

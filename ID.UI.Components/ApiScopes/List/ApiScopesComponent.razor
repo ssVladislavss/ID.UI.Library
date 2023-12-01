@@ -1,0 +1,51 @@
+﻿@inherits ApiScopesComponentModel
+
+<MudOverlay @bind-Visible="OverlayEnabled" DarkBackground="true" ZIndex="9999">
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+</MudOverlay>
+
+<MudStack Justify="Justify.FlexEnd" Row="true">
+    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Create"
+               Style="width: 200px; height: 60px;" Color="Color.Primary" OnClick="CreateApiScopeDialogShowAsync">
+        Создать новую область
+    </MudButton>
+</MudStack>
+
+<MudTable @ref="ScopesTable" T="Core.ApiScopes.IDApiScope" Items="@Scopes" MultiSelection="true" @bind-SelectedItems="SelectedScopes"
+      Hover="true" SelectOnRowClick="false">
+     <HeaderContent>
+         <MudTh>Идентификатор</MudTh>
+         <MudTh>Наименование</MudTh>
+         <MudTh>Статус</MudTh>
+         <MudTh>Обязательность</MudTh>
+     </HeaderContent>
+
+     <RowTemplate>
+         <MudTd DataLabel="Идентификатор">@context.Id</MudTd>
+             <MudTd DataLabel="Наименование">@context.Name</MudTd>
+             <MudTd DataLabel="Статус">
+                 @if (context.Enabled)
+                 {
+                     <MudChip Size="Size.Small" Label="true" Color="Color.Success" OnClick="() => EditStatusAsync(context)">Активна</MudChip>
+                 }
+                 else
+                 {
+                     <MudChip Size="Size.Small" Label="true" Color="Color.Error" OnClick="() => EditStatusAsync(context)">Отключена</MudChip>
+                 }
+             </MudTd>
+             <MudTd DataLabel="Обязательность">
+                 @if (context.Enabled)
+                 {
+                     <MudChip Size="Size.Small" Label="true" Color="Color.Primary">Обязательна</MudChip>
+                 }
+                 else
+                 {
+                     <MudChip Size="Size.Small" Label="true" Color="Color.Primary">Опциональна</MudChip>
+                 }
+             </MudTd>
+     </RowTemplate>
+
+     <PagerContent>
+         <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+     </PagerContent>
+</MudTable>
