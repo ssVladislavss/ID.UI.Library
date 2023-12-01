@@ -11,14 +11,24 @@
     </MudButton>
 </MudStack>
 
-<MudTable @ref="ScopesTable" T="Core.ApiScopes.IDApiScope" Items="@Scopes" MultiSelection="true" @bind-SelectedItems="SelectedScopes"
-      Hover="true" SelectOnRowClick="false">
+<MudTable @ref="ScopesTable"
+          Loading="OverlayEnabled"
+          T="Core.ApiScopes.IDApiScope"
+          Items="@Scopes"
+          MultiSelection="true"
+          @bind-SelectedItems="SelectedScopes"
+          Hover="true" SelectOnRowClick="false">
+
      <HeaderContent>
          <MudTh>Идентификатор</MudTh>
          <MudTh>Наименование</MudTh>
          <MudTh>Статус</MudTh>
          <MudTh>Обязательность</MudTh>
      </HeaderContent>
+
+     <NoRecordsContent>
+         <MudText Typo="Typo.body1">Пока нет ниодной записи</MudText>
+     </NoRecordsContent>
 
      <RowTemplate>
          <MudTd DataLabel="Идентификатор">@context.Id</MudTd>
