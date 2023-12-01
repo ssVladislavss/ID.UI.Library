@@ -1,15 +1,51 @@
-﻿@inherits CreateApiScopeDialogModel
+﻿@using MudBlazor
+
+@inherits CreateApiScopeDialogModel
 
 <MudDialog>
     <TitleContent>
         <MudText Typo="Typo.h6">
             <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
-            Форма добавления обслати доступа
+            Форма добавления области доступа
         </MudText>
     </TitleContent>
 
     <DialogContent>
         <MudContainer MaxWidth="MaxWidth.Medium">
+            <MudTabs Elevation="1" Rounded="true" PanelClass="pa-6">
+                <MudTabPanel>
+                    <ChildContent>
+                        <MudText>Custom tab content only</MudText>
+                    </ChildContent>
+                    <TabContent>
+                        Item One
+                    </TabContent>
+                </MudTabPanel>
+                <MudTabPanel>
+                    <ChildContent>
+                        <MudText>Both custom tab and wrapper content</MudText>
+                    </ChildContent>
+                    <TabWrapperContent>
+                        <MudTooltip Text="ToolTip Two">
+                            @context
+                        </MudTooltip>
+                    </TabWrapperContent>
+                    <TabContent>
+                        <MudText Typo="Typo.h6">Item Two</MudText>
+                    </TabContent>
+                </MudTabPanel>
+                <MudTabPanel Text="Item Three">
+                    <ChildContent>
+                        <MudText>Custom wrapper content only</MudText>
+                    </ChildContent>
+                    <TabWrapperContent>
+                        <MudTooltip Text="ToolTip Three">
+                            @context
+                        </MudTooltip>
+                    </TabWrapperContent>
+                </MudTabPanel>
+            </MudTabs>
+
             <MudForm @ref="ModelForm" Model="Model">
                 <MudStack Spacing="2">
                     <MudStack Spacing="3">
@@ -55,6 +91,27 @@
                                 <MudRadio Color="Color.Primary" Option="@(false)">Нет</MudRadio>
                             </MudRadioGroup>
                         </MudItem>
+                    </MudStack>
+
+                    <MudStack Spacing="2">
+
+                        @if (Model.UserClaims.Any())
+                        {
+                            <MudText Typo="Typo.body1">Утверждения области доступа</MudText>
+                            @foreach (var userClaim in Model.UserClaims)
+                            {
+                                <MudText Typo="Typo.caption">@userClaim</MudText>
+                            }
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.body1">Добавьте утверждения для области доступа</MudText>
+                        }
+
+                        <MudTextField @bind-Value="@claim"
+                                      Label="Утверждение" />
+
+                        <MudButton Color="Color.Primary" Variant="Variant.Filled" Disabled="string.IsNullOrEmpty(claim)" OnClick="AddUserClaim">Добавить</MudButton>
                     </MudStack>
                 </MudStack>
             </MudForm>

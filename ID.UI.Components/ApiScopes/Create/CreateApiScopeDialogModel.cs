@@ -22,7 +22,11 @@ namespace ID.UI.Components.ApiScopes.Create
                 return;
 
             if (Model.UserClaims.Any(x => x == claim))
+            {
+                Snackbar!.Add("Утверждение уже добавлено", Severity.Info, opt => opt.HideTransitionDuration = 1);
+
                 return;
+            }
 
             Model.UserClaims.Add(claim);
 
