@@ -12,7 +12,8 @@
     }
 
     <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Create"
-               Style="width: 200px; height: 60px;" Color="Color.Info">
+               Style="width: 200px; height: 60px;" Color="Color.Info"
+               OnClick="ShowCreateResourceDialogAsync">
         Создать новую область
     </MudButton>
 </MudStack>
@@ -42,21 +43,11 @@
             <MudTd DataLabel="Статус">
                 @if (context.Enabled)
             {
-                <MudChip Size="Size.Small" Label="true" Color="Color.Success" Variant="Variant.Text">Активна</MudChip>
+                <MudChip Size="Size.Small" Label="true" Color="Color.Success" Variant="Variant.Text" OnClick="() => EditResourceStatusAsync(context)">Активна</MudChip>
             }
             else
             {
-                <MudChip Size="Size.Small" Label="true" Color="Color.Error" Variant="Variant.Text">Отключена</MudChip>
-            }
-        </MudTd>
-        <MudTd DataLabel="Обязательность">
-            @if (context.Enabled)
-            {
-                <MudChip Size="Size.Small" Label="true" Color="Color.Primary" Variant="Variant.Text">Обязательна</MudChip>
-            }
-            else
-            {
-                <MudChip Size="Size.Small" Label="true" Color="Color.Primary" Variant="Variant.Text">Опциональна</MudChip>
+                <MudChip Size="Size.Small" Label="true" Color="Color.Error" Variant="Variant.Text" OnClick="() => EditResourceStatusAsync(context)">Отключена</MudChip>
             }
         </MudTd>
         <MudTd>

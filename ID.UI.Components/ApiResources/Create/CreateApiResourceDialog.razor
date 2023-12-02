@@ -1,0 +1,134 @@
+﻿@inherits CreateApiResourceComponent
+
+<MudDialog IsVisible="Show">
+
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
+            Форма создания ресурса приложения
+        </MudText>
+    </TitleContent>
+
+    <DialogContent>
+        <ServerLoading Show="OverlayEnabled" />
+        <MudContainer MaxWidth="MaxWidth.Medium">
+            <MudTabs Elevation="1" Rounded="true" PanelClass="pa-6">
+                <MudTabPanel Text="Основные данные">
+                    <ChildContent>
+                        <MudForm @ref="ModelForm" Model="Model">
+                            <MudTextField @bind-Value="@Model.Name"
+                                          Label="Наименование"
+                                          AutoFocus="true"
+                                          Immediate="true"
+                                          For="() => Model.Name"
+                                          Validation="Model.Validator.IsValid"
+                                          T="string"
+                                          InputMode="InputMode.text" />
+
+                            <MudTextField @bind-Value="@Model.DisplayName"
+                                          Immediate="true"
+                                          Label="Наименование (отображение)" />
+
+                            <MudTextField @bind-Value="@Model.Description"
+                                          Immediate="true"
+                                          Label="Описание" />
+                        </MudForm>
+                    </ChildContent>
+                </MudTabPanel>
+                <MudTabPanel Text="Доп. данные">
+                    <ChildContent>
+                        <MudStack Spacing="3">
+
+                            <MudItem>
+                                <MudText Typo="Typo.body1">Показать в документе Discovery?</MudText>
+
+                                <MudRadioGroup @bind-SelectedOption="Model.ShowInDiscoveryDocument">
+                                    <MudRadio Color="Color.Primary" Option="@(true)">Да</MudRadio>
+                                    <MudRadio Color="Color.Primary" Option="@(false)">Нет</MudRadio>
+                                </MudRadioGroup>
+                            </MudItem>
+
+                        </MudStack>
+                    </ChildContent>
+                </MudTabPanel>
+                <MudTabPanel Text="Утверждения">
+                    <ChildContent>
+                        <MudStack Spacing="2">
+
+                            @if (Model.UserClaims.Any())
+                            {
+                                <MudText Typo="Typo.body1">Утверждения ресурса приложения</MudText>
+                                @foreach (var userClaim in Model.UserClaims)
+                                {
+                                    <MudText Typo="Typo.caption">@userClaim</MudText>
+                                }
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.body1">Добавьте утверждения для области доступа</MudText>
+                            }
+
+                            <MudTextField @bind-Value="@claim"
+                                          Label="Утверждение" />
+
+                            <MudStack Justify="Justify.SpaceBetween" Row="true">
+                                <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="AddUserClaim">Добавить</MudButton>
+                                @if (Model.UserClaims.Count > 0)
+                                {
+                                    <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="RemoveLastUserClaim">Удалить</MudButton>
+                                }
+                            </MudStack>
+                        </MudStack>
+                    </ChildContent>
+                </MudTabPanel>
+
+                <MudTabPanel Text="Области доступа">
+                    <ChildContent>
+                        <MudStack Spacing="2">
+
+                            @if (Model.Scopes.Any())
+                            {
+                                <MudText Typo="Typo.body1">Области доступа ресурса приложения</MudText>
+                                @foreach (var scope in Model.Scopes)
+                                {
+                                    <MudText Typo="Typo.caption">@scope</MudText>
+                                }
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.body1">Добавьте области доступа для ресурса</MudText>
+                            }
+
+                            <MudTextField @bind-Value="@resourceScope"
+                                          Label="Область доступа" />
+
+                            <MudStack Justify="Justify.SpaceBetween" Row="true">
+                                <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="AddScope">Добавить</MudButton>
+                                @if (Model.Scopes.Count > 0)
+                                {
+                                    <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="RemoveLastScope">Удалить</MudButton>
+                                }
+                            </MudStack>
+                        </MudStack>
+                    </ChildContent>
+                </MudTabPanel>
+
+                <MudTabPanel Text="Ключ ресурсов">
+                    <ChildContent>
+                        <MudStack Spacing="2">
+
+                            <ID.UI.Components.Secrets.SecretWork CurrentList="Model.ApiSecrets" />
+
+                        </MudStack>
+                    </ChildContent>
+                </MudTabPanel>
+
+            </MudTabs>
+        </MudContainer>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton Color="Color.Primary" Disabled="!ModelForm.IsValid" Variant="Variant.Filled" OnClick="CreateResourceAsync">Создать</MudButton>
+    </DialogActions>
+
+</MudDialog>

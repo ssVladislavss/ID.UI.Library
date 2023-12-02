@@ -1,4 +1,5 @@
-﻿using ID.UI.Components.Base;
+﻿using ID.UI.Components.ApiResources.Create;
+using ID.UI.Components.Base;
 using ID.UI.Core.ApiResources;
 using ID.UI.Core.ApiResources.Abstractions;
 using Microsoft.AspNetCore.Components;
@@ -9,7 +10,6 @@ namespace ID.UI.Components.ApiResources.List
     public class ApiResourcesComponent : IDBaseComponent
     {
         private List<IDApiResource> _apiResources = new();
-
         protected IEnumerable<IDApiResource> ApiResources
         {
             get
@@ -75,6 +75,7 @@ namespace ID.UI.Components.ApiResources.List
                     }
                     else
                     {
+                        _apiResources.Remove(resource);
                         Snackbar?.Add($"{resource.Name} - удалена", MudBlazor.Severity.Success);
                     }
                 }
@@ -83,6 +84,50 @@ namespace ID.UI.Components.ApiResources.List
 
                 StateHasChanged();
             }
+        }
+
+        protected virtual async Task ShowCreateResourceDialogAsync()
+        {
+            var dialogReference = await DialogService!.ShowAsync<CreateApiResourceDialog>("", new DialogOptions
+            {
+                CloseButton = true,
+                CloseOnEscapeKey = false,
+                DisableBackdropClick = true,
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true
+            });
+
+            var dialogResult = await dialogReference.Result;
+            if(dialogResult != null)
+                if(dialogResult.Data != null && dialogResult.Data is IDApiResource apiResource)
+                    _apiResources.Add(apiResource);
+        }
+
+        protected virtual async Task EditResourceStatusAsync(IDApiResource apiResource)
+        {
+            OverlayEnabled = true;
+
+            StateHasChanged();
+
+            var editResult = await ApiResourceService!.EditStatusAsync(new Core.ApiResources.Models.EditApiResourceStatusModel
+            {
+                Id = apiResource.Id,
+                Status = !apiResource.Enabled
+            });
+
+            if(editResult.Result == Core.AjaxResultTypes.Success)
+            {
+                apiResource.Enabled = !apiResource.Enabled;
+                Snackbar?.Add("Статус ресурса изменен", Severity.Success);
+            }
+            else
+            {
+                Snackbar?.Add(editResult.Message, Severity.Error);
+            }
+
+            OverlayEnabled = false;
+
+            StateHasChanged();
         }
     }
 }
