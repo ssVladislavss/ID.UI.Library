@@ -1,10 +1,10 @@
-﻿@inherits CreateApiScopeDialogModel
+﻿@inherits EditApiScopeDialogComponent
 
 <MudDialog>
     <TitleContent>
         <MudText Typo="Typo.h6">
             <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
-            Форма добавления области доступа
+            Форма редактирования области доступа
         </MudText>
     </TitleContent>
 
@@ -17,8 +17,8 @@
                         <MudForm @ref="ModelForm" Model="Model">
                             <MudTextField @bind-Value="@Model.Name"
                                           Label="Наименование"
-                                          AutoFocus="true"
                                           Immediate="true"
+                                          AutoFocus="true"
                                           For="() => Model.Name"
                                           Validation="Model.Validator.IsValid"
                                           T="string"
@@ -93,6 +93,7 @@
                                     <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="RemoveLastUserClaim">Удалить</MudButton>
                                 }
                             </MudStack>
+                            
                         </MudStack>
                     </ChildContent>
                 </MudTabPanel>
@@ -101,6 +102,6 @@
     </DialogContent>
 
     <DialogActions>
-        <MudButton Color="Color.Primary" Disabled="!ModelForm.IsValid" Variant="Variant.Filled" OnClick="CreateApiScopeAsync">Создать</MudButton>
+        <MudButton Color="Color.Primary" Disabled="!ModelForm.IsValid" Variant="Variant.Filled" OnClick="EditScopeAsync">Сохранить</MudButton>
     </DialogActions>
 </MudDialog>

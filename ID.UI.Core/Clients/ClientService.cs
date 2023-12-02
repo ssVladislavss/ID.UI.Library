@@ -1,4 +1,5 @@
-﻿using ID.UI.Core.Clients.Abstractions;
+﻿using ID.UI.Core.ApiScopes;
+using ID.UI.Core.Clients.Abstractions;
 using ID.UI.Core.Clients.Models;
 using IdentityServer4.Models;
 
@@ -18,13 +19,16 @@ namespace ID.UI.Core.Clients
 
         public async Task<AjaxResult<Client>> CreateAsync(CreateClientModel data)
         {
-            var accessToken = OnGetToken?.Invoke();
+            string? accessToken = null;
+            if (OnGetToken != null)
+                accessToken = await OnGetToken.Invoke();
 
             if (string.IsNullOrEmpty(accessToken))
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
 
-                return AjaxResult<Client>.Error($"Необходимо авторизоваться", System.Net.HttpStatusCode.Unauthorized);
+                return AjaxResult<Client>.Error("Необходимо авторизоваться");
             }
 
             _clientProvider.WithAccessToken(accessToken);
@@ -42,13 +46,16 @@ namespace ID.UI.Core.Clients
 
         public async Task<AjaxResult> EditAsync(EditClientModel data)
         {
-            var accessToken = OnGetToken?.Invoke();
+            string? accessToken = null;
+            if (OnGetToken != null)
+                accessToken = await OnGetToken.Invoke();
 
             if (string.IsNullOrEmpty(accessToken))
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
 
-                return AjaxResult.Error($"Необходимо авторизоваться", System.Net.HttpStatusCode.Unauthorized);
+                return AjaxResult.Error("Необходимо авторизоваться");
             }
 
             _clientProvider.WithAccessToken(accessToken);
@@ -66,13 +73,16 @@ namespace ID.UI.Core.Clients
 
         public async Task<AjaxResult> EditStatusAsync(EditClientStatusModel data)
         {
-            var accessToken = OnGetToken?.Invoke();
+            string? accessToken = null;
+            if (OnGetToken != null)
+                accessToken = await OnGetToken.Invoke();
 
             if (string.IsNullOrEmpty(accessToken))
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
 
-                return AjaxResult.Error($"Необходимо авторизоваться", System.Net.HttpStatusCode.Unauthorized);
+                return AjaxResult.Error("Необходимо авторизоваться");
             }
 
             _clientProvider.WithAccessToken(accessToken);
@@ -90,14 +100,18 @@ namespace ID.UI.Core.Clients
 
         public async Task<AjaxResult<Client>> FindAsync(string clientId)
         {
-            var accessToken = OnGetToken?.Invoke();
+            string? accessToken = null;
+            if (OnGetToken != null)
+                accessToken = await OnGetToken.Invoke();
 
             if (string.IsNullOrEmpty(accessToken))
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
 
-                return AjaxResult<Client>.Error($"Необходимо авторизоваться", System.Net.HttpStatusCode.Unauthorized);
+                return AjaxResult<Client>.Error("Необходимо авторизоваться");
             }
+
             _clientProvider.WithAccessToken(accessToken);
 
             var result = await _clientProvider.FindAsync(clientId);
@@ -113,13 +127,16 @@ namespace ID.UI.Core.Clients
 
         public async Task<AjaxResult<IEnumerable<Client>>> GetAsync(ClientSearchFilter filter)
         {
-            var accessToken = OnGetToken?.Invoke();
+            string? accessToken = null;
+            if (OnGetToken != null)
+                accessToken = await OnGetToken.Invoke();
 
             if (string.IsNullOrEmpty(accessToken))
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
 
-                return AjaxResult<IEnumerable<Client>>.Error($"Необходимо авторизоваться", System.Net.HttpStatusCode.Unauthorized);
+                return AjaxResult<IEnumerable<Client>>.Error("Необходимо авторизоваться");
             }
 
             _clientProvider.WithAccessToken(accessToken);
@@ -137,13 +154,16 @@ namespace ID.UI.Core.Clients
 
         public async Task<AjaxResult> RemoveAsync(string clientId)
         {
-            var accessToken = OnGetToken?.Invoke();
+            string? accessToken = null;
+            if (OnGetToken != null)
+                accessToken = await OnGetToken.Invoke();
 
             if (string.IsNullOrEmpty(accessToken))
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
 
-                return AjaxResult.Error($"Необходимо авторизоваться", System.Net.HttpStatusCode.Unauthorized);
+                return AjaxResult.Error("Необходимо авторизоваться");
             }
 
             _clientProvider.WithAccessToken(accessToken);

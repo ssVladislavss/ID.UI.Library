@@ -2,6 +2,7 @@
 using ID.UI.Core.ApiScopes;
 using ID.UI.Core.ApiScopes.Abstractions;
 using ID.UI.Core.ApiScopes.Models;
+using ID.UI.Core.Options;
 using IdentityModel.Client;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -60,7 +61,7 @@ namespace ID.UI.Providers.API.ID.ApiScopes
             }
         }
 
-        public async Task<AjaxResult> EditAsync(EditApiScopeViewModel data)
+        public async Task<AjaxResult> EditAsync(EditApiScopeModel data)
         {
             using var client = _httpClientFactory.CreateClient();
             client.SetBearerToken(_accessTolen);

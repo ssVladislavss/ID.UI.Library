@@ -17,13 +17,16 @@ namespace ID.UI.Core.ApiScopes
 
         public async Task<AjaxResult<IDApiScope>> CreateAsync(CreateApiScopeModel data)
         {
-            var accessToken = OnGetToken?.Invoke();
+            string? accessToken = null;
+            if (OnGetToken != null)
+                accessToken = await OnGetToken.Invoke();
 
             if (string.IsNullOrEmpty(accessToken))
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
 
-                return AjaxResult<IDApiScope>.Error($"Необходимо авторизоваться", System.Net.HttpStatusCode.Unauthorized);
+                return AjaxResult<IDApiScope>.Error("Необходимо авторизоваться");
             }
 
             _apiScopeProvider.WithAccessToken(accessToken);
@@ -33,21 +36,25 @@ namespace ID.UI.Core.ApiScopes
             if(result.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
                result.StatusCode == System.Net.HttpStatusCode.Forbidden)
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
             }
 
             return result;
         }
 
-        public async Task<AjaxResult> EditAsync(EditApiScopeViewModel data)
+        public async Task<AjaxResult> EditAsync(EditApiScopeModel data)
         {
-            var accessToken = OnGetToken?.Invoke();
+            string? accessToken = null;
+            if (OnGetToken != null)
+                accessToken = await OnGetToken.Invoke();
 
             if (string.IsNullOrEmpty(accessToken))
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
 
-                return AjaxResult.Error($"Необходимо авторизоваться", System.Net.HttpStatusCode.Unauthorized);
+                return AjaxResult.Error("Необходимо авторизоваться");
             }
 
             _apiScopeProvider.WithAccessToken(accessToken);
@@ -57,7 +64,8 @@ namespace ID.UI.Core.ApiScopes
             if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
                result.StatusCode == System.Net.HttpStatusCode.Forbidden)
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
             }
 
             return result;
@@ -65,13 +73,16 @@ namespace ID.UI.Core.ApiScopes
 
         public async Task<AjaxResult> EditStatusAsync(EditApiScopeStatusModel data)
         {
-            var accessToken = OnGetToken?.Invoke();
+            string? accessToken = null;
+            if (OnGetToken != null)
+                accessToken = await OnGetToken.Invoke();
 
             if (string.IsNullOrEmpty(accessToken))
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
 
-                return AjaxResult.Error($"Необходимо авторизоваться", System.Net.HttpStatusCode.Unauthorized);
+                return AjaxResult.Error("Необходимо авторизоваться");
             }
 
             _apiScopeProvider.WithAccessToken(accessToken);
@@ -81,7 +92,8 @@ namespace ID.UI.Core.ApiScopes
             if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
                result.StatusCode == System.Net.HttpStatusCode.Forbidden)
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
             }
 
             return result;
@@ -89,14 +101,18 @@ namespace ID.UI.Core.ApiScopes
 
         public async Task<AjaxResult<IDApiScope>> FindAsync(int scopeId)
         {
-            var accessToken = OnGetToken?.Invoke();
+            string? accessToken = null;
+            if (OnGetToken != null)
+                accessToken = await OnGetToken.Invoke();
 
             if (string.IsNullOrEmpty(accessToken))
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
 
-                return AjaxResult<IDApiScope>.Error($"Необходимо авторизоваться", System.Net.HttpStatusCode.Unauthorized);
+                return AjaxResult<IDApiScope>.Error("Необходимо авторизоваться");
             }
+
             _apiScopeProvider.WithAccessToken(accessToken);
 
             var result = await _apiScopeProvider.FindAsync(scopeId);
@@ -104,7 +120,8 @@ namespace ID.UI.Core.ApiScopes
             if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
                result.StatusCode == System.Net.HttpStatusCode.Forbidden)
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
             }
 
             return result;
@@ -112,14 +129,18 @@ namespace ID.UI.Core.ApiScopes
 
         public async Task<AjaxResult<IEnumerable<IDApiScope>>> GetAsync(ApiScopeSearchFilter filter)
         {
-            var accessToken = OnGetToken?.Invoke();
+            string? accessToken = null;
+            if (OnGetToken != null)
+                accessToken = await OnGetToken.Invoke();
 
             if (string.IsNullOrEmpty(accessToken))
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
 
-                return AjaxResult<IEnumerable<IDApiScope>>.Error($"Необходимо авторизоваться", System.Net.HttpStatusCode.Unauthorized);
+                return AjaxResult<IEnumerable<IDApiScope>>.Error("Необходимо авторизоваться");
             }
+
             _apiScopeProvider.WithAccessToken(accessToken);
 
             var result = await _apiScopeProvider.GetAsync(filter);
@@ -127,7 +148,8 @@ namespace ID.UI.Core.ApiScopes
             if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
                result.StatusCode == System.Net.HttpStatusCode.Forbidden)
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
             }
 
             return result;
@@ -135,14 +157,18 @@ namespace ID.UI.Core.ApiScopes
 
         public async Task<AjaxResult> RemoveAsync(int scopeId)
         {
-            var accessToken = OnGetToken?.Invoke();
+            string? accessToken = null;
+            if (OnGetToken != null)
+                accessToken = await OnGetToken.Invoke();
 
             if (string.IsNullOrEmpty(accessToken))
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
 
-                return AjaxResult.Error($"Необходимо авторизоваться", System.Net.HttpStatusCode.Unauthorized);
+                return AjaxResult.Error("Необходимо авторизоваться");
             }
+
             _apiScopeProvider.WithAccessToken(accessToken);
 
             var result = await _apiScopeProvider.RemoveAsync(scopeId);
@@ -150,7 +176,8 @@ namespace ID.UI.Core.ApiScopes
             if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
                result.StatusCode == System.Net.HttpStatusCode.Forbidden)
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
             }
 
             return result;

@@ -2,6 +2,7 @@
 using ID.UI.Core.Clients;
 using ID.UI.Core.Clients.Abstractions;
 using ID.UI.Core.Clients.Models;
+using ID.UI.Core.Options;
 using IdentityModel.Client;
 using IdentityServer4.Models;
 using Microsoft.Extensions.Options;

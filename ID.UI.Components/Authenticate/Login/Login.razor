@@ -1,0 +1,48 @@
+﻿@inherits LoginComponent
+
+<ServerLoading Show="OverlayEnabled" />
+
+<MudContainer MaxWidth="MaxWidth.Small" Style="width: 100%;
+                                                height: 100%;
+                                                position: fixed;
+                                                left: 50%;
+                                                margin-right: -50%;
+                                                display: flex;
+                                                justify-content: center;
+                                                overflow: auto;
+                                                flex-direction: column;
+                                                transform: translate(-50%, 0)">
+
+    <MudStack Spacing="4">
+
+        <MudText Align="Align.Center" Color="Color.Primary" Typo="Typo.body1">Вход в систему</MudText>
+
+        <MudForm @ref="ModelForm" Model="Model">
+            <MudTextField @bind-Value="@Model.Email"
+                          Label="Email адрес"
+                          AutoFocus="true"
+                          For="() => Model.Email"
+                          Validation="Model.Validator.IsValid"
+                          T="string"
+                          InputMode="InputMode.text"
+                          InputType="InputType.Email"/>
+
+            <MudTextField @bind-Value="@Model.Password"
+                          Label="Пароль"
+                          Validation="Model.Validator.IsValid"
+                          For="() => Model.Password"
+                          T="string"
+                          InputMode="InputMode.text"
+                          Immediate="true"
+                          InputType="InputType.Password"/>
+        </MudForm>
+
+        <MudCheckBox @bind-Checked="@Model.RememberMe"
+                     Color="@(Model.RememberMe ? Color.Primary : Color.Default)"
+                     Size="Size.Medium"
+                     Label="Запомнить меня" />
+
+        <MudButton Color="Color.Primary" Disabled="!ModelForm.IsValid" Variant="Variant.Filled" FullWidth="true" OnClick="AuthorizeAsync">Войти</MudButton>
+
+    </MudStack>
+</MudContainer>

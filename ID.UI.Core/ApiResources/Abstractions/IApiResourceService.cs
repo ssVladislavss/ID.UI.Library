@@ -4,7 +4,7 @@ namespace ID.UI.Core.ApiResources.Abstractions
 {
     public interface IApiResourceService
     {
-        delegate string GetTokenHandler();
+        delegate Task<string?> GetTokenHandler();
         delegate Task TokenErrorHandler();
         event GetTokenHandler? OnGetToken;
         event TokenErrorHandler? OnTokenError;

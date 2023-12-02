@@ -1,20 +1,30 @@
 ﻿using ID.UI.Components.Base;
+using ID.UI.Core.ApiScopes;
 using ID.UI.Core.ApiScopes.Abstractions;
 using ID.UI.Core.ApiScopes.Models;
 using ID.UI.ViewModel.ApiScopes;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace ID.UI.Components.ApiScopes.Create
+namespace ID.UI.Components.ApiScopes.Edit
 {
-    public class CreateApiScopeDialogModel : IDBaseComponent
+    public class EditApiScopeDialogComponent : IDBaseComponent
     {
         protected string? claim;
+
         [CascadingParameter] protected MudDialogInstance? Instance { get; set; }
+        [Parameter] public IDApiScope? CurrentScope { get; set; }
         [Inject] protected IApiScopeService? ApiScopeService { get; set; }
 
-        protected CreateApiScopeViewModel Model { get; set; } = new CreateApiScopeViewModel();
+        protected EditApiScopeViewModel Model { get; set; } = new EditApiScopeViewModel();
         protected MudForm ModelForm { get; set; } = new MudForm();
+
+        protected override async Task OnInitializedAsync()
+        {
+            Model = new EditApiScopeViewModel(CurrentScope!);
+
+            await base.OnInitializedAsync();
+        }
 
         protected void AddUserClaim()
         {
@@ -23,7 +33,7 @@ namespace ID.UI.Components.ApiScopes.Create
 
             if (Model.UserClaims.Any(x => x == claim))
             {
-                Snackbar!.Add("Утверждение уже добавлено", Severity.Info, opt => opt.HideTransitionDuration = 1);
+                Snackbar!.Add("Утверждение уже добавлено", Severity.Info);
 
                 return;
             }
@@ -45,42 +55,43 @@ namespace ID.UI.Components.ApiScopes.Create
             }
         }
 
-        protected async Task CreateApiScopeAsync()
+        protected async Task EditScopeAsync()
         {
-            OverlayEnabled = true;
-
-            StateHasChanged();
-
             await ModelForm.Validate();
 
             if(ModelForm.IsValid)
             {
-                var requestModel = new CreateApiScopeModel()
+                OverlayEnabled = true;
+
+                StateHasChanged();
+
+                var requestModel = new EditApiScopeModel
                 {
                     Description = Model.Description,
                     DisplayName = Model.DisplayName,
                     Emphasize = Model.Emphasize,
+                    Id = Model.Id,
                     Name = Model.Name,
                     Required = Model.Required,
                     ShowInDiscoveryDocument = Model.ShowInDiscoveryDocument,
                     UserClaims = Model.UserClaims
                 };
 
-                var requestResult = await ApiScopeService!.CreateAsync(requestModel);
-                if(requestResult.Result == Core.AjaxResultTypes.Success && requestResult.Data != null)
+                var requestResult = await ApiScopeService!.EditAsync(requestModel);
+                if(requestResult.Result == Core.AjaxResultTypes.Success)
                 {
-                    Snackbar!.Add("Область успешно создана!", Severity.Success);
-                    Instance!.Close(requestResult.Data);
+                    Snackbar!.Add("Данные области успешно сохранены", Severity.Success);
+                    Instance!.Close(requestModel);
                 }
                 else
                 {
-                    Snackbar!.Add(requestResult.Message, Severity.Error);
+                    Snackbar!.Add("Не удалось сохранить данные области", Severity.Error);
                 }
+
+                OverlayEnabled = false;
+
+                StateHasChanged();
             }
-
-            OverlayEnabled = false;
-
-            StateHasChanged();
         }
     }
 }

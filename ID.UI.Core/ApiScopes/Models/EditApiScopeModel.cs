@@ -1,6 +1,6 @@
 ﻿namespace ID.UI.Core.ApiScopes.Models
 {
-    public class EditApiScopeViewModel
+    public class EditApiScopeModel
     {
         public int Id { get; set; }
         public string? Name { get; set; }

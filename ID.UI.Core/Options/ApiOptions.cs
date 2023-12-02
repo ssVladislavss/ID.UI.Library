@@ -1,4 +1,4 @@
-﻿namespace ID.UI.Providers.API
+﻿namespace ID.UI.Core.Options
 {
     public class ApiOptions
     {

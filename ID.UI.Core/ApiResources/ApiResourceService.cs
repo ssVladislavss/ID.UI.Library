@@ -18,11 +18,14 @@ namespace ID.UI.Core.ApiResources
 
         public async Task<AjaxResult<IDApiResource>> CreateAsync(CreateApiResourceModel data)
         {
-            var token = OnGetToken?.Invoke();
+            string? token = null;
+            if(OnGetToken != null)
+                token = await OnGetToken.Invoke();
 
             if (string.IsNullOrEmpty(token))
             {
-                OnTokenError?.Invoke();
+                if(OnTokenError != null)
+                    await OnTokenError.Invoke();
 
                 return AjaxResult<IDApiResource>.Error("Необходимо авторизоваться");
             }
@@ -42,11 +45,14 @@ namespace ID.UI.Core.ApiResources
 
         public async Task<AjaxResult> EditAsync(EditApiResourceModel data)
         {
-            var token = OnGetToken?.Invoke();
+            string? token = null;
+            if (OnGetToken != null)
+                token = await OnGetToken.Invoke();
 
             if (string.IsNullOrEmpty(token))
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
 
                 return AjaxResult.Error("Необходимо авторизоваться");
             }
@@ -66,11 +72,14 @@ namespace ID.UI.Core.ApiResources
 
         public async Task<AjaxResult> EditStatusAsync(EditApiResourceStatusModel data)
         {
-            var token = OnGetToken?.Invoke();
+            string? token = null;
+            if (OnGetToken != null)
+                token = await OnGetToken.Invoke();
 
             if (string.IsNullOrEmpty(token))
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
 
                 return AjaxResult.Error("Необходимо авторизоваться");
             }
@@ -90,11 +99,14 @@ namespace ID.UI.Core.ApiResources
 
         public async Task<AjaxResult<IDApiResource>> FindAsync(int resourceId)
         {
-            var token = OnGetToken?.Invoke();
+            string? token = null;
+            if (OnGetToken != null)
+                token = await OnGetToken.Invoke();
 
             if (string.IsNullOrEmpty(token))
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
 
                 return AjaxResult<IDApiResource>.Error("Необходимо авторизоваться");
             }
@@ -114,11 +126,14 @@ namespace ID.UI.Core.ApiResources
 
         public async Task<AjaxResult<IEnumerable<IDApiResource>>> GetAsync(ApiResourceSearchFilter filter)
         {
-            var token = OnGetToken?.Invoke();
+            string? token = null;
+            if (OnGetToken != null)
+                token = await OnGetToken.Invoke();
 
             if (string.IsNullOrEmpty(token))
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
 
                 return AjaxResult<IEnumerable<IDApiResource>>.Error("Необходимо авторизоваться");
             }
@@ -138,13 +153,16 @@ namespace ID.UI.Core.ApiResources
 
         public async Task<AjaxResult> RemoveAsync(int resourceId)
         {
-            var token = OnGetToken?.Invoke();
+            string? token = null;
+            if (OnGetToken != null)
+                token = await OnGetToken.Invoke();
 
             if (string.IsNullOrEmpty(token))
             {
-                OnTokenError?.Invoke();
+                if (OnTokenError != null)
+                    await OnTokenError.Invoke();
 
-                return AjaxResult<IEnumerable<IDApiResource>>.Error("Необходимо авторизоваться");
+                return AjaxResult.Error("Необходимо авторизоваться");
             }
 
             _apiResorceProvider.WithAccessToken(token);

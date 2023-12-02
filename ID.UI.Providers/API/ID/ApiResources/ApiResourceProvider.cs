@@ -2,6 +2,7 @@
 using ID.UI.Core.ApiResources;
 using ID.UI.Core.ApiResources.Abstractions;
 using ID.UI.Core.ApiResources.Models;
+using ID.UI.Core.Options;
 using IdentityModel.Client;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;

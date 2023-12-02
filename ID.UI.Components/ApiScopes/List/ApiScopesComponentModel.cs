@@ -1,7 +1,9 @@
 ﻿using ID.UI.Components.ApiScopes.Create;
+using ID.UI.Components.ApiScopes.Edit;
 using ID.UI.Components.Base;
 using ID.UI.Core.ApiScopes;
 using ID.UI.Core.ApiScopes.Abstractions;
+using ID.UI.Core.ApiScopes.Models;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -24,15 +26,13 @@ namespace ID.UI.Components.ApiScopes.List
         protected HashSet<IDApiScope> SelectedScopes { get; set; } = new HashSet<IDApiScope>();
 
         [Inject] protected IApiScopeService? ApiScopeService { get; set; }
-        [Inject] protected NavigationManager? Location { get; set; }
-        [Inject] protected IDialogService? DialogService { get; set; }
 
-        protected override Task OnInitializedAsync()
+        protected override async Task OnParametersSetAsync()
         {
+            await base.OnParametersSetAsync();
+
             ApiScopeService!.OnGetToken += OnGetToken;
             ApiScopeService!.OnTokenError += OnTokenError;
-
-            return base.OnInitializedAsync();
         }
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
@@ -59,6 +59,27 @@ namespace ID.UI.Components.ApiScopes.List
 
             StateHasChanged();
         }
+        protected async Task EditScopeAsync(IDApiScope apiScope)
+        {
+            var dialogInstanse = await DialogService!.ShowAsync<EditApiScopeDialog>("", new DialogParameters()
+            {
+                ["CurrentScope"] = apiScope
+            }, new DialogOptions
+            {
+                CloseButton = true,
+                CloseOnEscapeKey = false,
+                DisableBackdropClick = true,
+                MaxWidth = MaxWidth.Small,
+                FullWidth = true
+            });
+
+            var dialogResult = await dialogInstanse.Result;
+            if (dialogResult != null)
+                if (dialogResult.Data is EditApiScopeModel changedApiScope)
+                {
+                    apiScope.Set(changedApiScope);
+                }
+        }
         protected async Task EditStatusAsync(IDApiScope apiScope)
         {
             OverlayEnabled = true;
@@ -74,9 +95,9 @@ namespace ID.UI.Components.ApiScopes.List
             if(sendResult.Result == Core.AjaxResultTypes.Success)
             {
                 apiScope.Enabled = !apiScope.Enabled;
-            }
 
-            await Task.Delay(3000);
+                Snackbar!.Add("Статус изменён", Severity.Success);
+            }
 
             OverlayEnabled = false;
 
@@ -84,7 +105,7 @@ namespace ID.UI.Components.ApiScopes.List
         }
         protected async Task CreateApiScopeDialogShowAsync()
         {
-            var dialogResult = await DialogService!.ShowAsync<CreateApiScopeDialog>("", new DialogOptions
+            var dialogInstanse = await DialogService!.ShowAsync<CreateApiScopeDialog>("", new DialogOptions
             {
                 CloseButton = true,
                 CloseOnEscapeKey = false,
@@ -92,6 +113,40 @@ namespace ID.UI.Components.ApiScopes.List
                 MaxWidth = MaxWidth.Small,
                 FullWidth = true
             });
+
+            var dialogResult = await dialogInstanse.Result;
+            if(dialogResult != null)
+                if(dialogResult.Data is IDApiScope addedApiScope)
+                {
+                    _scopes.Add(addedApiScope);
+                }
+        }
+        protected async Task RemoveScopesAsync()
+        {
+            if(SelectedScopes.Count > 0)
+            {
+                OverlayEnabled = true;
+
+                StateHasChanged();
+
+                foreach(var scope in SelectedScopes)
+                {
+                    var removeResult = await ApiScopeService!.RemoveAsync(scope.Id);
+                    if(removeResult.Result == Core.AjaxResultTypes.Error)
+                    {
+                        Snackbar!.Add($"Не удалось удалить область - {scope.Name}", Severity.Error);
+                    }
+                    else
+                    {
+                        _scopes.Remove(scope);
+                        Snackbar!.Add($"Область - {scope.Name} - удалена", Severity.Success);
+                    }
+                }
+
+                OverlayEnabled = false;
+
+                StateHasChanged();
+            }
         }
     }
 }

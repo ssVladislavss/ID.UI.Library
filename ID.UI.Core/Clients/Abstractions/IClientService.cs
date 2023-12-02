@@ -5,8 +5,8 @@ namespace ID.UI.Core.Clients.Abstractions
 {
     public interface IClientService
     {
-        delegate string GetTokenHandler();
-        delegate string TokenErrorHandler();
+        delegate Task<string?> GetTokenHandler();
+        delegate Task TokenErrorHandler();
         event GetTokenHandler? OnGetToken;
         event TokenErrorHandler? OnTokenError;
 
