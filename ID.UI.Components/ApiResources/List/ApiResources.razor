@@ -1,0 +1,73 @@
+﻿@inherits ApiResourcesComponent
+
+<ServerLoading Show="OverlayEnabled" />
+
+<MudStack Justify="@(SelectedResources.Count == 0 ? Justify.FlexEnd : Justify.SpaceBetween)" Row="true">
+    @if (SelectedResources.Count != 0)
+    {
+        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Create"
+                   Style="width: 200px; height: 60px;" Color="Color.Error" OnClick="RemoveResourcesAsync">
+            Удалить
+        </MudButton>
+    }
+
+    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Create"
+               Style="width: 200px; height: 60px;" Color="Color.Info">
+        Создать новую область
+    </MudButton>
+</MudStack>
+
+<MudTable @ref="ResourceTable"
+          Loading="OverlayEnabled"
+          T="Core.ApiResources.IDApiResource"
+          Items="@ApiResources"
+          MultiSelection="true"
+          @bind-SelectedItems="SelectedResources"
+          Hover="true" SelectOnRowClick="false">
+
+    <HeaderContent>
+        <MudTh>Идентификатор</MudTh>
+        <MudTh>Наименование</MudTh>
+        <MudTh>Статус</MudTh>
+        <MudTh>Обязательность</MudTh>
+    </HeaderContent>
+
+    <NoRecordsContent>
+        <MudText Typo="Typo.body1">Пока нет ниодной записи</MudText>
+    </NoRecordsContent>
+
+    <RowTemplate>
+        <MudTd DataLabel="Идентификатор">@context.Id</MudTd>
+            <MudTd DataLabel="Наименование">@context.Name</MudTd>
+            <MudTd DataLabel="Статус">
+                @if (context.Enabled)
+            {
+                <MudChip Size="Size.Small" Label="true" Color="Color.Success" Variant="Variant.Text">Активна</MudChip>
+            }
+            else
+            {
+                <MudChip Size="Size.Small" Label="true" Color="Color.Error" Variant="Variant.Text">Отключена</MudChip>
+            }
+        </MudTd>
+        <MudTd DataLabel="Обязательность">
+            @if (context.Enabled)
+            {
+                <MudChip Size="Size.Small" Label="true" Color="Color.Primary" Variant="Variant.Text">Обязательна</MudChip>
+            }
+            else
+            {
+                <MudChip Size="Size.Small" Label="true" Color="Color.Primary" Variant="Variant.Text">Опциональна</MudChip>
+            }
+        </MudTd>
+        <MudTd>
+            <MudFab StartIcon="@Icons.Material.Filled.EditNote"
+                    Size="Size.Medium"
+                    Color="Color.Info"
+                    DisableElevation="true" />
+        </MudTd>
+    </RowTemplate>
+
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+    </PagerContent>
+</MudTable>
