@@ -130,6 +130,29 @@ namespace ID.UI.Core.State
                 return null;
             }
 
+            if(currentToken.ExpireAt <= DateTime.Now && !string.IsNullOrEmpty(currentToken.RefreshToken))
+            {
+                using var client = _httpClientFactory.CreateClient();
+
+                var refreshResult = await client.RequestRefreshTokenAsync(new RefreshTokenRequest
+                {
+                    RefreshToken = currentToken.RefreshToken,
+                    Scope = "service_id_api offline_access",
+                    Address = _apiOptions.IDUrl.AbsoluteUri + "connect/token",
+                    ClientId = _stateOptions.ClientId,
+                    ClientSecret = _stateOptions.ClientSecret,
+                });
+
+                if (!string.IsNullOrEmpty(refreshResult.AccessToken) && !refreshResult.IsError)
+                {
+                    currentToken = new StorageStateModel(refreshResult.AccessToken,
+                                                         DateTime.Now.AddSeconds(refreshResult.ExpiresIn).AddMinutes(-5),
+                                                         refreshResult.RefreshToken);
+
+                    await _localStorageService.SetItemAsync(StorageStateKey, currentToken);
+                }
+            }
+
             return currentToken.AccessToken;
         }
 

@@ -14,7 +14,6 @@ namespace ID.UI.Components.ApiScopes.Edit
 
         [CascadingParameter] protected MudDialogInstance? Instance { get; set; }
         [Parameter] public IDApiScope? CurrentScope { get; set; }
-        [Inject] protected IApiScopeService? ApiScopeService { get; set; }
 
         protected EditApiScopeViewModel Model { get; set; } = new EditApiScopeViewModel();
         protected MudForm ModelForm { get; set; } = new MudForm();

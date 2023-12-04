@@ -11,7 +11,7 @@
     <DialogContent>
         <ServerLoading Show="OverlayEnabled" />
         <MudContainer MaxWidth="MaxWidth.Medium">
-            <MudTabs Elevation="1" Rounded="true" PanelClass="pa-6">
+            <MudTabs Elevation="1" Rounded="true" PanelClass="pa-6" KeepPanelsAlive="true">
                 <MudTabPanel Text="Основные данные">
                     <ChildContent>
                         <MudForm @ref="ModelForm" Model="Model">

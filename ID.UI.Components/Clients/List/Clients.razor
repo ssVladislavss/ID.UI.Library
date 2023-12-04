@@ -1,35 +1,35 @@
-﻿@inherits ApiResourcesComponent
+﻿@inherits ClientsComponent
 
 <ServerLoading Show="OverlayEnabled" />
 
-<MudStack Justify="@(SelectedResources.Count == 0 ? Justify.FlexEnd : Justify.SpaceBetween)" Row="true">
-    @if (SelectedResources.Count != 0)
+<MudStack Justify="@(SelectedClients.Count == 0 ? Justify.FlexEnd : Justify.SpaceBetween)" Row="true">
+    @if (SelectedClients.Count != 0)
     {
         <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Create"
-                   Style="width: 200px; height: 60px;" Color="Color.Error" OnClick="RemoveResourcesAsync">
+                   Style="width: 200px; height: 60px;" Color="Color.Error" OnClick="RemoveClientsAsync">
             Удалить
         </MudButton>
     }
 
     <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Create"
-               Style="width: 200px; height: 60px;" Color="Color.Primary"
-               OnClick="ShowCreateResourceDialogAsync">
+               Style="width: 200px; height: 60px;" Color="Color.Primary" OnClick="CreateClientDialogShowAsync">
         Создать новую область
     </MudButton>
 </MudStack>
 
-<MudTable @ref="ResourceTable"
+<MudTable @ref="ClientsTable"
           Loading="OverlayEnabled"
-          T="Core.ApiResources.IDApiResource"
-          Items="@ApiResources"
+          T="IdentityServer4.Models.Client"
+          Items="@Clients"
           MultiSelection="true"
-          @bind-SelectedItems="SelectedResources"
+          @bind-SelectedItems="SelectedClients"
           Hover="true" SelectOnRowClick="false">
 
     <HeaderContent>
         <MudTh>Идентификатор</MudTh>
         <MudTh>Наименование</MudTh>
         <MudTh>Статус</MudTh>
+        <MudTh>Обязательность</MudTh>
     </HeaderContent>
 
     <NoRecordsContent>
@@ -37,16 +37,16 @@
     </NoRecordsContent>
 
     <RowTemplate>
-        <MudTd DataLabel="Идентификатор">@context.Id</MudTd>
-            <MudTd DataLabel="Наименование">@context.Name</MudTd>
+        <MudTd DataLabel="Идентификатор">@context.ClientId</MudTd>
+            <MudTd DataLabel="Наименование">@context.ClientName</MudTd>
             <MudTd DataLabel="Статус">
                 @if (context.Enabled)
             {
-                <MudChip Size="Size.Small" Label="true" Color="Color.Success" Variant="Variant.Text" OnClick="() => EditResourceStatusAsync(context)">Активна</MudChip>
+                <MudChip Size="Size.Small" Label="true" Color="Color.Success" Variant="Variant.Text" OnClick="() => EditClientStatusAsync(context)">Активно</MudChip>
             }
             else
             {
-                <MudChip Size="Size.Small" Label="true" Color="Color.Error" Variant="Variant.Text" OnClick="() => EditResourceStatusAsync(context)">Отключена</MudChip>
+                <MudChip Size="Size.Small" Label="true" Color="Color.Error" Variant="Variant.Text" OnClick="() => EditClientStatusAsync(context)">Отключено</MudChip>
             }
         </MudTd>
         <MudTd>
@@ -54,7 +54,7 @@
                     Size="Size.Medium"
                     Color="Color.Primary"
                     DisableElevation="true"
-                    OnClick="() => ShowEditResourceDialogAsync(context)" />
+                    OnClick="() => EditClientDialogShowAsync(context)" />
         </MudTd>
     </RowTemplate>
 

@@ -1,0 +1,466 @@
+﻿@inherits EditClientComponent
+
+<MudDialog DisableSidePadding="true">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
+            Форма редактирования данных клиентского приложения
+        </MudText>
+    </TitleContent>
+
+    <DialogContent>
+        <ServerLoading Show="OverlayEnabled" />
+        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Style="max-height: 800px; overflow-y: scroll">
+            <MudTabs Elevation="1" Rounded="true" PanelClass="pa-6" KeepPanelsAlive="true">
+
+                <MudTabPanel Text="Основные данные">
+                    <ChildContent>
+                        <MudForm @ref="ModelForm" Model="Model">
+                            <MudGrid Justify="Justify.SpaceEvenly" Spacing="3">
+
+                                <MudItem lg="4" md="6" sm="12" xs="12">
+
+                                    <MudTextField @bind-Value="@Model.ClientName"
+                                                  Label="Наименование (обязательно)"
+                                                  AutoFocus="true"
+                                                  Immediate="true"
+                                                  HelperText="ClientName"
+                                                  For="() => Model.ClientName"
+                                                  Validation="Model.Validator.IsValid"
+                                                  T="string"
+                                                  Variant="Variant.Filled"
+                                                  InputMode="InputMode.text" />
+
+                                    <MudTextField @bind-Value="@Model.Description"
+                                                  Label="Описание (не обязательно)"
+                                                  Immediate="true"
+                                                  For="() => Model.Description"
+                                                  HelperText="Description"
+                                                  Validation="Model.Validator.IsValid"
+                                                  T="string"
+                                                  Variant="Variant.Filled"
+                                                  InputMode="InputMode.text" />
+
+                                    <MudTextField @bind-Value="@Model.DeviceCodeLifetime"
+                                                  Label="Время жизни кода устройства"
+                                                  AutoFocus="true"
+                                                  Immediate="true"
+                                                  HelperText="DeviceCodeLifetime"
+                                                  For="() => Model.DeviceCodeLifetime"
+                                                  Validation="Model.Validator.IsValid"
+                                                  T="int"
+                                                  Variant="Variant.Filled"
+                                                  InputMode="InputMode.text" />
+                                </MudItem>
+
+                                <MudItem lg="4" md="6" sm="12" xs="12">
+
+                                    <MudTextField @bind-Value="@Model.ClientClaimsPrefix"
+                                                  Label="Префикс для утверждений (не обязательно)"
+                                                  Immediate="true"
+                                                  For="() => Model.ClientClaimsPrefix"
+                                                  Validation="Model.Validator.IsValid"
+                                                  HelperText="ClientClaimsPrefix"
+                                                  T="string"
+                                                  Variant="Variant.Filled"
+                                                  InputMode="InputMode.text" />
+
+                                    <MudTextField @bind-Value="@Model.ProtocolType"
+                                                  Label="Тип протокола (обязательно)"
+                                                  Immediate="true"
+                                                  HelperText="Например: oidc"
+                                                  For="() => Model.ProtocolType"
+                                                  Validation="Model.Validator.IsValid"
+                                                  T="string"
+                                                  Variant="Variant.Filled"
+                                                  InputMode="InputMode.text" />
+
+                                    <MudTextField @bind-Value="@Model.AbsoluteRefreshTokenLifetime"
+                                                  Label="Абсолютное время жизни токена обновления"
+                                                  Immediate="true"
+                                                  HelperText="AbsoluteRefreshTokenLifetime"
+                                                  For="() => Model.AbsoluteRefreshTokenLifetime"
+                                                  Validation="Model.Validator.IsValid"
+                                                  T="int"
+                                                  Variant="Variant.Filled"
+                                                  InputMode="InputMode.numeric"
+                                                  InputType="InputType.Number" />
+
+                                </MudItem>
+
+                                <MudItem lg="4" md="6" sm="12" xs="12">
+
+                                    <MudTextField @bind-Value="@Model.AccessTokenLifetime"
+                                                  Label="Время жизни токена авторизации"
+                                                  Immediate="true"
+                                                  HelperText="AccessTokenLifetime"
+                                                  For="() => Model.AccessTokenLifetime"
+                                                  Validation="Model.Validator.IsValid"
+                                                  T="int"
+                                                  Variant="Variant.Filled"
+                                                  InputMode="InputMode.numeric"
+                                                  InputType="InputType.Number" />
+
+                                    <MudSelect @bind-Value="@Model.AccessTokenType"
+                                               AnchorOrigin="Origin.BottomCenter"
+                                               Label="Тип токена авторизации"
+                                               Variant="Variant.Filled"
+                                               HelperText="AccessTokenType"
+                                               T="IdentityServer4.Models.AccessTokenType">
+                                        <MudSelectItem Value="IdentityServer4.Models.AccessTokenType.Reference">@IdentityServer4.Models.AccessTokenType.Reference.ToString()</MudSelectItem>
+                                            <MudSelectItem Value="IdentityServer4.Models.AccessTokenType.Jwt">@IdentityServer4.Models.AccessTokenType.Jwt.ToString()</MudSelectItem>
+                                        </MudSelect>
+
+                                        <MudTextField @bind-Value="@Model.AuthorizationCodeLifetime"
+                                                      Label="Время жизни кода авторизации"
+                                                      Immediate="true"
+                                                      HelperText="AuthorizationCodeLifetime"
+                                                      For="() => Model.AuthorizationCodeLifetime"
+                                                      Validation="Model.Validator.IsValid"
+                                                      T="int"
+                                                      Variant="Variant.Filled"
+                                                      InputMode="InputMode.numeric"
+                                                      InputType="InputType.Number" />
+
+                                    </MudItem>
+
+                                    <MudItem lg="4" md="6" sm="12" xs="12">
+
+                                        <MudTextField @bind-Value="@Model.ClientUri"
+                                                      Label="Url адрес приложения (не обязательно)"
+                                                      AutoFocus="true"
+                                                      Immediate="true"
+                                                      HelperText="ClientUri"
+                                                      For="() => Model.ClientUri"
+                                                      Validation="Model.Validator.IsValid"
+                                                      T="string"
+                                                      Variant="Variant.Filled"
+                                                      InputMode="InputMode.text" />
+
+                                        <MudTextField @bind-Value="@Model.FrontChannelLogoutUri"
+                                                      Label="FrontChannelLogoutUri (не обязательно)"
+                                                      AutoFocus="true"
+                                                      Immediate="true"
+                                                      HelperText="FrontChannelLogoutUri"
+                                                      For="() => Model.FrontChannelLogoutUri"
+                                                      Validation="Model.Validator.IsValid"
+                                                      T="string"
+                                                      Variant="Variant.Filled"
+                                                      InputMode="InputMode.text" />
+
+                                        <MudTextField @bind-Value="@Model.BackChannelLogoutUri"
+                                                      Label="Адрес выхода из канала приложения (не обязательно)"
+                                                      AutoFocus="true"
+                                                      Immediate="true"
+                                                      HelperText="BackChannelLogoutUri"
+                                                      For="() => Model.ClientUri"
+                                                      Validation="Model.Validator.IsValid"
+                                                      T="string"
+                                                      Variant="Variant.Filled"
+                                                      InputMode="InputMode.text" />
+
+                                    </MudItem>
+
+                                    <MudItem lg="4" md="6" sm="12" xs="12">
+
+                                        <MudTextField @bind-Value="@Model.ConsentLifetime"
+                                                      Label="ConsentLifetime (не обязательно)"
+                                                      Immediate="true"
+                                                      HelperText="ConsentLifetime"
+                                                      For="() => Model.ConsentLifetime"
+                                                      Validation="Model.Validator.IsValid"
+                                                      T="int?"
+                                                      Variant="Variant.Filled"
+                                                      InputMode="InputMode.numeric" />
+
+                                        <MudTextField @bind-Value="@Model.IdentityTokenLifetime"
+                                                      Label="IdentityTokenLifetime (не обязательно)"
+                                                      Immediate="true"
+                                                      HelperText="IdentityTokenLifetime"
+                                                      For="() => Model.IdentityTokenLifetime"
+                                                      Validation="Model.Validator.IsValid"
+                                                      T="int"
+                                                      Variant="Variant.Filled"
+                                                      InputMode="InputMode.numeric"
+                                                      InputType="InputType.Number" />
+
+                                        <MudTextField @bind-Value="@Model.LogoUri"
+                                                      Label="Адрес расположения логотипа приложения (не обязательно)"
+                                                      Immediate="true"
+                                                      HelperText="LogoUri"
+                                                      For="() => Model.LogoUri"
+                                                      Validation="Model.Validator.IsValid"
+                                                      T="string"
+                                                      Variant="Variant.Filled"
+                                                      InputMode="InputMode.text" />
+
+                                    </MudItem>
+
+                                    <MudItem lg="4" md="6" sm="12" xs="12">
+
+                                        <MudTextField @bind-Value="@Model.PairWiseSubjectSalt"
+                                                      Label="PairWiseSubjectSalt (не обязательно)"
+                                                      Immediate="true"
+                                                      HelperText="PairWiseSubjectSalt"
+                                                      For="() => Model.PairWiseSubjectSalt"
+                                                      Validation="Model.Validator.IsValid"
+                                                      T="string"
+                                                      Variant="Variant.Filled"
+                                                      InputMode="InputMode.text" />
+
+                                        <MudSelect @bind-Value="@Model.RefreshTokenExpiration"
+                                                   AnchorOrigin="Origin.BottomCenter"
+                                                   Label="Тип токена авторизации"
+                                                   Variant="Variant.Filled"
+                                                   HelperText="RefreshTokenExpiration"
+                                                   T="IdentityServer4.Models.TokenExpiration">
+                                            <MudSelectItem Value="IdentityServer4.Models.TokenExpiration.Absolute">@IdentityServer4.Models.TokenExpiration.Absolute.ToString()</MudSelectItem>
+                                            <MudSelectItem Value="IdentityServer4.Models.TokenExpiration.Sliding">@IdentityServer4.Models.TokenExpiration.Sliding.ToString()</MudSelectItem>
+                                        </MudSelect>
+
+                                        <MudSelect @bind-Value="@Model.RefreshTokenUsage"
+                                                   AnchorOrigin="Origin.BottomCenter"
+                                                   Label="Тип токена авторизации"
+                                                   Variant="Variant.Filled"
+                                                   HelperText="RefreshTokenUsage"
+                                                   T="IdentityServer4.Models.TokenUsage">
+                                            <MudSelectItem Value="IdentityServer4.Models.TokenUsage.ReUse">@IdentityServer4.Models.TokenUsage.ReUse.ToString()</MudSelectItem>
+                                            <MudSelectItem Value="IdentityServer4.Models.TokenUsage.OneTimeOnly">@IdentityServer4.Models.TokenUsage.OneTimeOnly.ToString()</MudSelectItem>
+                                        </MudSelect>
+
+                                    </MudItem>
+
+                                    <MudItem lg="4" md="6" sm="12" xs="12">
+
+                                        <MudTextField @bind-Value="@Model.SlidingRefreshTokenLifetime"
+                                                      Label="SlidingRefreshTokenLifetime"
+                                                      Immediate="true"
+                                                      HelperText="ConsentLifetime"
+                                                      For="() => Model.SlidingRefreshTokenLifetime"
+                                                      Validation="Model.Validator.IsValid"
+                                                      T="int"
+                                                      Variant="Variant.Filled"
+                                                      InputMode="InputMode.numeric"
+                                                      InputType="InputType.Number" />
+
+                                    </MudItem>
+
+                                    <MudItem lg="4" md="6" sm="12" xs="12">
+
+                                        <MudTextField @bind-Value="@Model.UserCodeType"
+                                                      Label="UserCodeType"
+                                                      Immediate="true"
+                                                      HelperText="UserCodeType"
+                                                      For="() => Model.UserCodeType"
+                                                      Validation="Model.Validator.IsValid"
+                                                      T="string"
+                                                      Variant="Variant.Filled"
+                                                      InputMode="InputMode.text"
+                                                      InputType="InputType.Text" />
+
+                                    </MudItem>
+
+                                    <MudItem lg="4" md="6" sm="12" xs="12">
+
+                                        <MudTextField @bind-Value="@Model.UserSsoLifetime"
+                                                      Label="UserSsoLifetime"
+                                                      Immediate="true"
+                                                      HelperText="UserSsoLifetime"
+                                                      For="() => Model.UserSsoLifetime"
+                                                      Validation="Model.Validator.IsValid"
+                                                      T="int?"
+                                                      Variant="Variant.Filled"
+                                                      InputMode="InputMode.numeric"
+                                                      InputType="InputType.Number" />
+
+                                    </MudItem>
+
+                                </MudGrid>
+                            </MudForm>
+                        </ChildContent>
+                    </MudTabPanel>
+
+                    <MudTabPanel Text="Доп. данные">
+                        <ChildContent>
+                            <MudStack Spacing="3">
+                                <MudGrid Justify="Justify.SpaceEvenly" Spacing="3">
+
+                                    <MudItem lg="3" md="4" sm="6" xs="12">
+
+                                        <MudCheckBox @bind-Checked="Model.AllowAccessTokensViaBrowser"
+                                                     UnCheckedColor="Color.Default"
+                                                     Color="Color.Primary"
+                                                     Label="AllowAccessTokensViaBrowser" />
+
+                                        <MudCheckBox @bind-Checked="Model.AllowOfflineAccess"
+                                                     UnCheckedColor="Color.Default"
+                                                     Color="Color.Primary"
+                                                     Label="AllowOfflineAccess" />
+
+                                        <MudCheckBox @bind-Checked="Model.AllowPlainTextPkce"
+                                                     UnCheckedColor="Color.Default"
+                                                     Color="Color.Primary"
+                                                     Label="AllowPlainTextPkce" />
+
+                                        <MudCheckBox @bind-Checked="Model.AllowRememberConsent"
+                                                     UnCheckedColor="Color.Default"
+                                                     Color="Color.Primary"
+                                                     Label="AllowRememberConsent" />
+
+                                    </MudItem>
+
+                                    <MudItem lg="3" md="4" sm="6" xs="12">
+
+                                        <MudCheckBox @bind-Checked="Model.EnableLocalLogin"
+                                                     UnCheckedColor="Color.Default"
+                                                     Color="Color.Primary"
+                                                     Label="EnableLocalLogin" />
+
+                                        <MudCheckBox @bind-Checked="Model.AlwaysIncludeUserClaimsInIdToken"
+                                                     UnCheckedColor="Color.Default"
+                                                     Color="Color.Primary"
+                                                     Label="AlwaysIncludeUserClaimsInIdToken" />
+
+                                        <MudCheckBox @bind-Checked="Model.AlwaysSendClientClaims"
+                                                     UnCheckedColor="Color.Default"
+                                                     Color="Color.Primary"
+                                                     Label="AlwaysSendClientClaims" />
+
+                                        <MudCheckBox @bind-Checked="Model.RequireConsent"
+                                                     UnCheckedColor="Color.Default"
+                                                     Color="Color.Primary"
+                                                     Label="RequireConsent" />
+
+                                    </MudItem>
+
+                                    <MudItem lg="3" md="4" sm="6" xs="12">
+
+                                        <MudCheckBox @bind-Checked="Model.UpdateAccessTokenClaimsOnRefresh"
+                                                     UnCheckedColor="Color.Default"
+                                                     Color="Color.Primary"
+                                                     Label="UpdateAccessTokenClaimsOnRefresh" />
+
+                                        <MudCheckBox @bind-Checked="Model.IncludeJwtId"
+                                                     UnCheckedColor="Color.Default"
+                                                     Color="Color.Primary"
+                                                     Label="IncludeJwtId" />
+
+                                        <MudCheckBox @bind-Checked="Model.RequireClientSecret"
+                                                     UnCheckedColor="Color.Default"
+                                                     Color="Color.Primary"
+                                                     Label="RequireClientSecret" />
+
+                                        <MudCheckBox @bind-Checked="Model.RequirePkce"
+                                                     UnCheckedColor="Color.Default"
+                                                     Color="Color.Primary"
+                                                     Label="RequirePkce" />
+
+                                    </MudItem>
+
+                                    <MudItem lg="3" md="4" sm="6" xs="12">
+
+                                        <MudCheckBox @bind-Checked="Model.RequireRequestObject"
+                                                     UnCheckedColor="Color.Default"
+                                                     Color="Color.Primary"
+                                                     Label="RequireRequestObject" />
+
+                                    </MudItem>
+
+                                </MudGrid>
+                            </MudStack>
+                        </ChildContent>
+                    </MudTabPanel>
+
+                    <MudTabPanel Text="Утверждения">
+                        <ChildContent>
+                            <MudStack Spacing="2">
+                                <ID.UI.Components.Clients.ClientClaims.ClientClaims CurrentClaims="Model.Claims" />
+                            </MudStack>
+                        </ChildContent>
+                    </MudTabPanel>
+
+                    <MudTabPanel Text="Redirect Urls">
+                        <ChildContent>
+                            <MudStack Spacing="2">
+                                <ID.UI.Components.Clients.ClientUrls.ClientUrls UrlsType="Core.Clients.ClientUrlsType.RedirectUrls"
+                                                                                CurrentList="Model.RedirectUris" />
+                            </MudStack>
+                        </ChildContent>
+                    </MudTabPanel>
+
+                    <MudTabPanel Text="Post Logout Redirect Urls">
+                        <ChildContent>
+                            <MudStack Spacing="2">
+                                <ID.UI.Components.Clients.ClientUrls.ClientUrls UrlsType="Core.Clients.ClientUrlsType.PostLogoutRedirectUrls"
+                                                                                CurrentList="Model.PostLogoutRedirectUris" />
+                            </MudStack>
+                        </ChildContent>
+                    </MudTabPanel>
+
+                    <MudTabPanel Text="Allow Cors Origins">
+                        <ChildContent>
+                            <MudStack Spacing="2">
+                                <ID.UI.Components.Clients.ClientUrls.ClientUrls UrlsType="Core.Clients.ClientUrlsType.AllowCorsOrigin"
+                                                                                CurrentList="Model.AllowedCorsOrigins" />
+                            </MudStack>
+                        </ChildContent>
+                    </MudTabPanel>
+
+                    <MudTabPanel Text="Allowed scopes">
+                        <ChildContent>
+                            <MudStack Spacing="2">
+                                <ID.UI.Components.Clients.ClientUrls.ClientUrls UrlsType="Core.Clients.ClientUrlsType.AllowedScopes"
+                                                                                CurrentList="Model.AllowedScopes"
+                                                                                Scopes="Scopes"/>
+                            </MudStack>
+                        </ChildContent>
+                    </MudTabPanel>
+
+                    <MudTabPanel Text="Allow Grant Types">
+                        <ChildContent>
+                            <MudStack Spacing="2">
+                                <ID.UI.Components.Clients.ClientUrls.ClientUrls UrlsType="Core.Clients.ClientUrlsType.AllowGrantTypes"
+                                                                                CurrentList="Model.AllowedGrantTypes" />
+                            </MudStack>
+                        </ChildContent>
+                    </MudTabPanel>
+
+                    <MudTabPanel Text="Allowed Identity Token Signing Algorithms">
+                        <ChildContent>
+                            <MudStack Spacing="2">
+                                <ID.UI.Components.Clients.ClientUrls.ClientUrls UrlsType="Core.Clients.ClientUrlsType.AllowedIdentityTokenSigningAlgorithms"
+                                                                                CurrentList="Model.AllowedIdentityTokenSigningAlgorithms" />
+                            </MudStack>
+                        </ChildContent>
+                    </MudTabPanel>
+
+                    <MudTabPanel Text="Identity Provider Restrictions">
+                        <ChildContent>
+                            <MudStack Spacing="2">
+                                <ID.UI.Components.Clients.ClientUrls.ClientUrls UrlsType="Core.Clients.ClientUrlsType.IdentityProviderRestrictions"
+                                                                                CurrentList="Model.IdentityProviderRestrictions" />
+                            </MudStack>
+                        </ChildContent>
+                    </MudTabPanel>
+
+                    <MudTabPanel Text="Ключи приложения">
+                        <ChildContent>
+                            <MudStack Spacing="2">
+                                <ID.UI.Components.Secrets.SecretWork CurrentList="Model.ClientSecrets" />
+                            </MudStack>
+                        </ChildContent>
+                    </MudTabPanel>
+
+                </MudTabs>
+            </MudContainer>
+        </DialogContent>
+
+        <DialogActions>
+            <MudButton Color="Color.Primary"
+                       Disabled="!ModelForm.IsValid"
+                       Variant="Variant.Filled"
+                       FullWidth="true"
+                       Size="Size.Large"
+                       OnClick="EditClientAsync">Сохранить данные приложения</MudButton>
+        </DialogActions>
+    </MudDialog>

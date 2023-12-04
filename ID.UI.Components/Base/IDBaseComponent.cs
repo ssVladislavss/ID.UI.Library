@@ -1,4 +1,7 @@
-﻿using ID.UI.Core.State.Abstractions;
+﻿using ID.UI.Core.ApiResources.Abstractions;
+using ID.UI.Core.ApiScopes.Abstractions;
+using ID.UI.Core.Clients.Abstractions;
+using ID.UI.Core.State.Abstractions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
@@ -10,6 +13,9 @@ namespace ID.UI.Components.Base
     {
         [CascadingParameter] protected Task<AuthenticationState>? AuthenticationState { get; set; }
         [Inject] protected IStateService? StateService { get; set; }
+        [Inject] protected IApiResourceService? ApiResourceService { get; set; }
+        [Inject] protected IApiScopeService? ApiScopeService { get; set; }
+        [Inject] protected IClientService? ClientService { get; set; }
         [Inject] protected NavigationManager? Location { get; set; }
         [Inject] protected ISnackbar? Snackbar { get; set; }
         [Inject] protected IDialogService? DialogService { get; set; }
@@ -28,6 +34,15 @@ namespace ID.UI.Components.Base
                     CurrentUser = state.User;
                 }
             }
+
+            ApiResourceService!.OnGetToken += OnGetToken;
+            ApiResourceService!.OnTokenError += OnTokenError;
+
+            ApiScopeService!.OnGetToken += OnGetToken;
+            ApiScopeService!.OnTokenError += OnTokenError;
+
+            ClientService!.OnGetToken += OnGetToken;
+            ClientService!.OnTokenError += OnTokenError;
 
             await base.OnParametersSetAsync();
         }

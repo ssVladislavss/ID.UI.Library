@@ -1,0 +1,48 @@
+﻿@inherits ClientClaimsComponent
+
+@if (CurrentClaims.Count > 0)
+{
+    <MudStack Spacing="1">
+        <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Primary">Добавленные утверждения</MudText>
+
+        <MudList Clickable="true" Dense="true" DisableGutters="true">
+            @foreach (var claim in CurrentClaims)
+            {
+                <MudListItem Icon="@Icons.Material.Filled.DeleteOutline"
+                             IconColor="Color.Error"
+                             OnClick="() => RemoveClaimInList(claim)">
+                    @claim.Type - @claim.Value
+                </MudListItem>
+            }
+        </MudList>
+    </MudStack>
+}
+
+<MudStack Spacing="3">
+    <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Primary">Добавить новое утверждение</MudText>
+    <MudForm @ref="ModelForm" Model="Model">
+        <MudTextField @bind-Value="@Model.Type"
+                      Label="Тип утверждения (обязательно)"
+                      AutoFocus="true"
+                      Immediate="true"
+                      For="() => Model.Type"
+                      Validation="Model.Validator.IsValid"
+                      T="string"
+                      InputMode="InputMode.text" />
+
+        <MudTextField @bind-Value="@Model.Value"
+                      Label="Значение утверждения (обязательно)"
+                      AutoFocus="true"
+                      Immediate="true"
+                      For="() => Model.Value"
+                      Validation="Model.Validator.IsValid"
+                      T="string"
+                      InputMode="InputMode.text" />
+    </MudForm>
+
+    <MudButton Color="Color.Primary"
+               Variant="Variant.Filled"
+               Disabled="!ModelForm.IsValid"
+               Size="Size.Small"
+               OnClick="AddClaimToListAsync">Сохранить</MudButton>
+</MudStack>

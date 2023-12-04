@@ -1,7 +1,12 @@
 ﻿using ID.UI.Components.ApiResources.Create;
+using ID.UI.Components.ApiResources.Edit;
 using ID.UI.Components.Base;
 using ID.UI.Core.ApiResources;
 using ID.UI.Core.ApiResources.Abstractions;
+using ID.UI.Core.ApiResources.Models;
+using ID.UI.Core.ApiScopes;
+using ID.UI.Core.ApiScopes.Abstractions;
+using IdentityServer4.Models;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -20,16 +25,6 @@ namespace ID.UI.Components.ApiResources.List
         }
         protected HashSet<IDApiResource> SelectedResources = new();
         protected MudTable<IDApiResource> ResourceTable = new MudTable<IDApiResource>();
-
-        [Inject] protected IApiResourceService? ApiResourceService { get; set; }
-
-        protected override async Task OnParametersSetAsync()
-        {
-            await base.OnParametersSetAsync();
-
-            ApiResourceService!.OnTokenError += OnTokenError;
-            ApiResourceService!.OnGetToken += OnGetToken;
-        }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -88,7 +83,20 @@ namespace ID.UI.Components.ApiResources.List
 
         protected virtual async Task ShowCreateResourceDialogAsync()
         {
-            var dialogReference = await DialogService!.ShowAsync<CreateApiResourceDialog>("", new DialogOptions
+            OverlayEnabled = true;
+
+            StateHasChanged();
+
+            var scopesResult = await ApiScopeService!.GetAsync(new Core.ApiScopes.ApiScopeSearchFilter());
+
+            OverlayEnabled = false;
+
+            StateHasChanged();
+
+            var dialogReference = await DialogService!.ShowAsync<CreateApiResourceDialog>("", new DialogParameters
+            {
+                ["Scopes"] = scopesResult.Result == Core.AjaxResultTypes.Success ? scopesResult.Data : new List<IDApiScope>()
+            }, new DialogOptions
             {
                 CloseButton = true,
                 CloseOnEscapeKey = false,
@@ -128,6 +136,39 @@ namespace ID.UI.Components.ApiResources.List
             OverlayEnabled = false;
 
             StateHasChanged();
+        }
+
+        public virtual async Task ShowEditResourceDialogAsync(IDApiResource apiResource)
+        {
+            OverlayEnabled = true;
+
+            StateHasChanged();
+
+            var scopesResult = await ApiScopeService!.GetAsync(new Core.ApiScopes.ApiScopeSearchFilter());
+
+            OverlayEnabled = false;
+
+            StateHasChanged();
+
+            var dialogReference = await DialogService!.ShowAsync<EditApiResourceDialog>("", new DialogParameters
+            {
+                ["CurrentResource"] = apiResource,
+                ["Scopes"] = scopesResult.Result == Core.AjaxResultTypes.Success ? scopesResult.Data : new List<IDApiScope>()
+            }, new DialogOptions
+            {
+                CloseButton = true,
+                CloseOnEscapeKey = false,
+                DisableBackdropClick = true,
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true
+            });
+
+            var dialogResult = await dialogReference.Result;
+            if (dialogResult != null)
+                if (dialogResult.Data != null && dialogResult.Data is EditApiResourceModel editModel)
+                {
+                    apiResource.Set(editModel);
+                }
         }
     }
 }

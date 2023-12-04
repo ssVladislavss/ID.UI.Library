@@ -1,4 +1,5 @@
 ﻿using ID.UI.ViewModel.Secrets.Validators;
+using IdentityServer4.Models;
 
 namespace ID.UI.ViewModel.Secrets
 {
@@ -12,6 +13,18 @@ namespace ID.UI.ViewModel.Secrets
 
         public SecretViewModel()
         {
+            Validator = new SecretViewModelValidator();
+        }
+
+        public SecretViewModel(Secret secret)
+        {
+            if(secret != null)
+            {
+                Description = secret.Description;
+                Value = secret.Value;
+                Expiration = secret.Expiration;
+            }
+
             Validator = new SecretViewModelValidator();
         }
 

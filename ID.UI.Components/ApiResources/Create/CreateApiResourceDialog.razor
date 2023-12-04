@@ -12,7 +12,7 @@
     <DialogContent>
         <ServerLoading Show="OverlayEnabled" />
         <MudContainer MaxWidth="MaxWidth.Medium">
-            <MudTabs Elevation="1" Rounded="true" PanelClass="pa-6">
+            <MudTabs Elevation="1" Rounded="true" PanelClass="pa-6" KeepPanelsAlive="true">
                 <MudTabPanel Text="Основные данные">
                     <ChildContent>
                         <MudForm @ref="ModelForm" Model="Model">
@@ -88,27 +88,29 @@
 
                             @if (Model.Scopes.Any())
                             {
-                                <MudText Typo="Typo.body1">Области доступа ресурса приложения</MudText>
-                                @foreach (var scope in Model.Scopes)
-                                {
-                                    <MudText Typo="Typo.caption">@scope</MudText>
-                                }
+                                <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Primary">Добавленные области</MudText>
+
+                                <MudList Clickable="true" Dense="true" DisableGutters="true">
+                                    @foreach (var key in Model.Scopes)
+                                    {
+                                        <MudListItem Icon="@Icons.Material.Filled.Api"
+                                                     IconColor="Color.Error">
+                                            @key
+                                        </MudListItem>
+                                    }
+                                </MudList>
                             }
                             else
                             {
-                                <MudText Typo="Typo.body1">Добавьте области доступа для ресурса</MudText>
+                                <MudText Typo="Typo.h6">Добавьте области доступа</MudText>
                             }
 
-                            <MudTextField @bind-Value="@resourceScope"
-                                          Label="Область доступа" />
-
-                            <MudStack Justify="Justify.SpaceBetween" Row="true">
-                                <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="AddScope">Добавить</MudButton>
-                                @if (Model.Scopes.Count > 0)
+                            <MudSelect SelectedValuesChanged="SelectedApiScopesChanged" T="string" Label="Области доступа" MultiSelection="true" SelectedValues="Model.Scopes">
+                                @foreach (var scope in Scopes)
                                 {
-                                    <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="RemoveLastScope">Удалить</MudButton>
+                                    <MudSelectItem T="string" Value="@scope.Name">@scope.Name</MudSelectItem>
                                 }
-                            </MudStack>
+                            </MudSelect>
                         </MudStack>
                     </ChildContent>
                 </MudTabPanel>

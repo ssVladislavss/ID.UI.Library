@@ -1,10 +1,11 @@
-﻿@inherits EditApiScopeDialogComponent
+﻿@inherits EditApiResourceComponent
 
 <MudDialog>
+
     <TitleContent>
         <MudText Typo="Typo.h6">
             <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
-            Форма редактирования области доступа
+            Форма изменения данных ресурса приложения
         </MudText>
     </TitleContent>
 
@@ -17,8 +18,8 @@
                         <MudForm @ref="ModelForm" Model="Model">
                             <MudTextField @bind-Value="@Model.Name"
                                           Label="Наименование"
-                                          Immediate="true"
                                           AutoFocus="true"
+                                          Immediate="true"
                                           For="() => Model.Name"
                                           Validation="Model.Validator.IsValid"
                                           T="string"
@@ -37,14 +38,6 @@
                 <MudTabPanel Text="Доп. данные">
                     <ChildContent>
                         <MudStack Spacing="3">
-                            <MudItem>
-                                <MudText Typo="Typo.body1">Область обязательна?</MudText>
-
-                                <MudRadioGroup @bind-SelectedOption="Model.Required">
-                                    <MudRadio Color="Color.Primary" Option="@(true)">Да</MudRadio>
-                                    <MudRadio Color="Color.Primary" Option="@(false)">Нет</MudRadio>
-                                </MudRadioGroup>
-                            </MudItem>
 
                             <MudItem>
                                 <MudText Typo="Typo.body1">Показать в документе Discovery?</MudText>
@@ -55,14 +48,6 @@
                                 </MudRadioGroup>
                             </MudItem>
 
-                            <MudItem>
-                                <MudText Typo="Typo.body1">Подчеркивать?</MudText>
-
-                                <MudRadioGroup @bind-SelectedOption="Model.Emphasize">
-                                    <MudRadio Color="Color.Primary" Option="@(true)">Да</MudRadio>
-                                    <MudRadio Color="Color.Primary" Option="@(false)">Нет</MudRadio>
-                                </MudRadioGroup>
-                            </MudItem>
                         </MudStack>
                     </ChildContent>
                 </MudTabPanel>
@@ -72,7 +57,7 @@
 
                             @if (Model.UserClaims.Any())
                             {
-                                <MudText Typo="Typo.body1">Утверждения области доступа</MudText>
+                                <MudText Typo="Typo.body1">Утверждения ресурса приложения</MudText>
                                 @foreach (var userClaim in Model.UserClaims)
                                 {
                                     <MudText Typo="Typo.caption">@userClaim</MudText>
@@ -93,15 +78,60 @@
                                     <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="RemoveLastUserClaim">Удалить</MudButton>
                                 }
                             </MudStack>
-                            
                         </MudStack>
                     </ChildContent>
                 </MudTabPanel>
+
+                <MudTabPanel Text="Области доступа">
+                    <ChildContent>
+                        <MudStack Spacing="2">
+
+                            @if (Model.Scopes.Any())
+                            {
+                                <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Primary">Добавленные области</MudText>
+
+                                <MudList Clickable="true" Dense="true" DisableGutters="true">
+                                    @foreach (var key in Model.Scopes)
+                                    {
+                                        <MudListItem Icon="@Icons.Material.Filled.Api"
+                                                     IconColor="Color.Error">
+                                            @key
+                                        </MudListItem>
+                                    }
+                                </MudList>
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.h6">Добавьте области доступа</MudText>
+                            }
+
+                            <MudSelect SelectedValuesChanged="SelectedApiScopesChanged" T="string" Label="Области доступа" MultiSelection="true" SelectedValues="Model.Scopes">
+                                @foreach (var scope in Scopes)
+                                {
+                                    <MudSelectItem T="string" Value="@scope.Name">@scope.Name</MudSelectItem>
+                                }
+                            </MudSelect>
+
+                        </MudStack>
+                    </ChildContent>
+                </MudTabPanel>
+
+                <MudTabPanel Text="Ключ ресурсов">
+                    <ChildContent>
+                        <MudStack Spacing="2">
+
+                            <ID.UI.Components.Secrets.SecretWork CurrentList="Model.ApiSecrets" />
+
+                        </MudStack>
+                    </ChildContent>
+                </MudTabPanel>
+
             </MudTabs>
         </MudContainer>
     </DialogContent>
 
     <DialogActions>
-        <MudButton Color="Color.Primary" Disabled="!ModelForm.IsValid" Variant="Variant.Filled" OnClick="EditScopeAsync">Сохранить</MudButton>
+        <MudButton Color="Color.Primary" Disabled="!ModelForm.IsValid" Variant="Variant.Filled" OnClick="EditResourceAsync">Сохранить</MudButton>
     </DialogActions>
+
 </MudDialog>

@@ -2,14 +2,12 @@
 using ID.UI.Components.ApiScopes.Edit;
 using ID.UI.Components.Base;
 using ID.UI.Core.ApiScopes;
-using ID.UI.Core.ApiScopes.Abstractions;
 using ID.UI.Core.ApiScopes.Models;
-using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
 namespace ID.UI.Components.ApiScopes.List
 {
-    public class ApiScopesComponentModel : IDBaseComponent
+    public class ApiScopesComponent : IDBaseComponent
     {
         private List<IDApiScope> _scopes = new();
 
@@ -24,16 +22,6 @@ namespace ID.UI.Components.ApiScopes.List
             }
         }
         protected HashSet<IDApiScope> SelectedScopes { get; set; } = new HashSet<IDApiScope>();
-
-        [Inject] protected IApiScopeService? ApiScopeService { get; set; }
-
-        protected override async Task OnParametersSetAsync()
-        {
-            await base.OnParametersSetAsync();
-
-            ApiScopeService!.OnGetToken += OnGetToken;
-            ApiScopeService!.OnTokenError += OnTokenError;
-        }
 
         protected async override Task OnAfterRenderAsync(bool firstRender)
         {

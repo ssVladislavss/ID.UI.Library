@@ -11,7 +11,6 @@ namespace ID.UI.Components.ApiScopes.Create
     {
         protected string? claim;
         [CascadingParameter] protected MudDialogInstance? Instance { get; set; }
-        [Inject] protected IApiScopeService? ApiScopeService { get; set; }
 
         protected CreateApiScopeViewModel Model { get; set; } = new CreateApiScopeViewModel();
         protected MudForm ModelForm { get; set; } = new MudForm();

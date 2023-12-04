@@ -1,5 +1,6 @@
 ﻿using ID.UI.Components.Base;
 using ID.UI.ViewModel.Secrets;
+using IdentityModel;
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
@@ -24,7 +25,7 @@ namespace ID.UI.Components.Secrets
                     CurrentList.Add(new SecretViewModel
                     {
                         Description = Model.Description,
-                        Value = Model.Value,
+                        Value = Model.Value!.ToSha256(),
                         Expiration = Model.Expiration,
                     });
 

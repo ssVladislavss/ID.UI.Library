@@ -1,4 +1,4 @@
-﻿@inherits ApiScopesComponentModel
+﻿@inherits ApiScopesComponent
 
 <ServerLoading Show="OverlayEnabled" />
 
@@ -12,7 +12,7 @@
     }
 
     <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Create"
-               Style="width: 200px; height: 60px;" Color="Color.Info" OnClick="CreateApiScopeDialogShowAsync">
+               Style="width: 200px; height: 60px;" Color="Color.Primary" OnClick="CreateApiScopeDialogShowAsync">
         Создать новую область
     </MudButton>
 </MudStack>
@@ -62,7 +62,7 @@
              <MudTd>
                  <MudFab StartIcon="@Icons.Material.Filled.EditNote"
                          Size="Size.Medium"
-                         Color="Color.Info"
+                    Color="Color.Primary"
                          DisableElevation="true"
                          OnClick="() => EditScopeAsync(context)" />
              </MudTd>

@@ -6,24 +6,27 @@ using ID.UI.ViewModel.ApiResources;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace ID.UI.Components.ApiResources.Create
+namespace ID.UI.Components.ApiResources.Edit
 {
-    public class CreateApiResourceComponent : IDBaseComponent
+    public class EditApiResourceComponent : IDBaseComponent
     {
         protected string? claim;
-        protected string? resourceScope;
 
-        [CascadingParameter] MudDialogInstance? Instance { get; set; }
-        [Parameter] public bool Show { get; set; }
-        [Parameter] public Action<IDApiResource>? CreateComplete { get; set; }
+        [CascadingParameter] protected MudDialogInstance? Instance { get; set; }
+        [Parameter] public IDApiResource? CurrentResource { get; set; }
         [Parameter] public IEnumerable<IDApiScope> Scopes { get; set; } = new List<IDApiScope>();
 
-        protected CreateApiResourceViewModel Model { get; set; } = new CreateApiResourceViewModel();
+        protected EditApiResourceViewModel Model { get; set; } = new EditApiResourceViewModel();
         protected MudForm ModelForm { get; set; } = new MudForm();
 
-        protected void SelectedApiScopesChanged(IEnumerable<string> apiScopes)
+        protected override async Task OnParametersSetAsync()
         {
-            Model.Scopes = apiScopes.ToList();
+            if(CurrentResource != null)
+            {
+                Model = new EditApiResourceViewModel(CurrentResource);
+            }
+
+            await base.OnParametersSetAsync();
         }
 
         protected void AddUserClaim()
@@ -55,36 +58,12 @@ namespace ID.UI.Components.ApiResources.Create
             }
         }
 
-        protected void AddScope()
+        protected void SelectedApiScopesChanged(IEnumerable<string> apiScopes)
         {
-            if (string.IsNullOrEmpty(resourceScope))
-                return;
-
-            if (Model.Scopes.Any(x => x == resourceScope))
-            {
-                Snackbar!.Add("Область уже добавлена", Severity.Info);
-
-                return;
-            }
-
-            Model.Scopes.Add(resourceScope);
-
-            claim = string.Empty;
-
-            StateHasChanged();
+            Model.Scopes = apiScopes.ToList();
         }
 
-        protected void RemoveLastScope()
-        {
-            if (Model.Scopes.Any())
-            {
-                var currentScope = Model.Scopes.Last();
-                if (!string.IsNullOrEmpty(currentScope))
-                    Model.Scopes.Remove(currentScope);
-            }
-        }
-
-        protected virtual async Task CreateResourceAsync()
+        protected virtual async Task EditResourceAsync()
         {
             await ModelForm.Validate();
 
@@ -94,27 +73,27 @@ namespace ID.UI.Components.ApiResources.Create
 
                 StateHasChanged();
 
-                var requestModel = new CreateApiResourceModel
+                var requestModel = new EditApiResourceModel
                 {
                     ApiSecrets = Model.ApiSecrets.Select(x => new IdentityServer4.Models.Secret(x.Value, x.Description, x.Expiration)).ToList(),
                     Description = Model.Description,
                     DisplayName = Model.DisplayName,
+                    Id = Model.Id,
                     Name = Model.Name,
                     Scopes = Model.Scopes,
                     ShowInDiscoveryDocument = Model.ShowInDiscoveryDocument,
                     UserClaims = Model.UserClaims
                 };
 
-                var createResult = await ApiResourceService!.CreateAsync(requestModel);
-                if(createResult.Result == Core.AjaxResultTypes.Success && createResult.Data != null)
+                var editResult = await ApiResourceService!.EditAsync(requestModel);
+                if(editResult.Result == Core.AjaxResultTypes.Success)
                 {
-                    CreateComplete?.Invoke(createResult.Data);
-                    Instance?.Close(createResult.Data);
-                    Snackbar?.Add("Ресурс успешно создан", Severity.Success);
+                    Snackbar?.Add("Ресурс успешно сохранен", Severity.Success);
+                    Instance?.Close(requestModel);
                 }
                 else
                 {
-                    Snackbar?.Add(createResult.Message, Severity.Error);
+                    Snackbar?.Add(editResult.Message, Severity.Error);
                 }
 
                 OverlayEnabled = false;

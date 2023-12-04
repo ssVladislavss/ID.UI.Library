@@ -1,0 +1,72 @@
+﻿@inherits ClientUrlsComponent
+
+@if (CurrentList.Any())
+{
+    <MudStack Spacing="1">
+        <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Primary">@CurrentTitle</MudText>
+
+        <MudList Clickable="true" Dense="true" DisableGutters="true">
+            @foreach (var item in CurrentList)
+            {
+                <MudListItem Icon="@Icons.Material.Filled.DeleteOutline"
+                             IconColor="Color.Error"
+                             OnClick="() => RemoveUrlInCurrentList(item)">
+                    @item
+                </MudListItem>
+            }
+        </MudList>
+    </MudStack>
+}
+
+<MudStack Spacing="3">
+    <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Primary">@AddNewTitle</MudText>
+    
+        @if(UrlsType == Core.Clients.ClientUrlsType.AllowGrantTypes)
+        {
+            <MudSelect SelectedValues="CurrentList"
+                       AnchorOrigin="Origin.BottomCenter"
+                       Label="Тип авторизации приложения"
+                       MultiSelection="true"
+                       SelectedValuesChanged="OnChangedSelectedValues"
+                       T="string">
+                <MudSelectItem Value="IdentityServer4.Models.GrantType.Implicit">@IdentityServer4.Models.GrantType.Implicit</MudSelectItem>
+                <MudSelectItem Value="IdentityServer4.Models.GrantType.ClientCredentials">@IdentityServer4.Models.GrantType.ClientCredentials</MudSelectItem>
+                <MudSelectItem Value="IdentityServer4.Models.GrantType.DeviceFlow">@IdentityServer4.Models.GrantType.DeviceFlow</MudSelectItem>
+                <MudSelectItem Value="IdentityServer4.Models.GrantType.AuthorizationCode">@IdentityServer4.Models.GrantType.AuthorizationCode</MudSelectItem>
+                <MudSelectItem Value="IdentityServer4.Models.GrantType.Hybrid">@IdentityServer4.Models.GrantType.Hybrid</MudSelectItem>
+                <MudSelectItem Value="IdentityServer4.Models.GrantType.ResourceOwnerPassword">@IdentityServer4.Models.GrantType.ResourceOwnerPassword</MudSelectItem>
+            </MudSelect>
+        }
+        else if (UrlsType == Core.Clients.ClientUrlsType.AllowedScopes)
+        {
+            <MudSelect SelectedValues="CurrentList"
+                       AnchorOrigin="Origin.BottomCenter"
+                       Label="Области доступа приложения"
+                       MultiSelection="true"
+                       SelectedValuesChanged="OnChangedSelectedValues"
+                       T="string">
+                @foreach (var scope in Scopes)
+                {
+                    <MudSelectItem Value="scope.Name">@scope.Name</MudSelectItem>
+                }
+            </MudSelect>
+        }
+        else
+        {
+            <MudTextField @bind-Value="@CurrentValue"
+                          Label="@CurrentTextBoxLabel"
+                          AutoFocus="true"
+                          Immediate="true"
+                          T="string"
+                          InputMode="InputMode.text" />
+        }
+
+    @if(UrlsType != Core.Clients.ClientUrlsType.AllowGrantTypes && UrlsType != Core.Clients.ClientUrlsType.AllowedScopes)
+    {
+        <MudButton Color="Color.Primary"
+                   Variant="Variant.Filled"
+                   Disabled="string.IsNullOrEmpty(CurrentValue)"
+                   Size="Size.Small"
+                   OnClick="AddUrlToCurrentList">Добавить</MudButton>
+    }
+</MudStack>
