@@ -40,7 +40,7 @@ namespace ID.UI.Components.ApiScopes.List
             var sendResult = await ApiScopeService!.GetAsync(new ApiScopeSearchFilter());
             if(sendResult.Result == Core.AjaxResultTypes.Success && sendResult.Data != null)
             {
-                _scopes = sendResult.Data.ToList();
+                _scopes = sendResult.Data.Where(x => x.Id != default).ToList();
             }
 
             OverlayEnabled = false;

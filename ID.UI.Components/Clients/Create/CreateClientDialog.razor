@@ -28,7 +28,7 @@
                                                   For="() => Model.ClientName"
                                                   Validation="Model.Validator.IsValid"
                                                   T="string"
-                                                  Variant="Variant.Filled"
+                                                  Variant="Variant.Outlined"
                                                   InputMode="InputMode.text" />
 
                                     <MudTextField @bind-Value="@Model.Description"
@@ -38,7 +38,7 @@
                                                   HelperText="Description"
                                                   Validation="Model.Validator.IsValid"
                                                   T="string"
-                                                  Variant="Variant.Filled"
+                                                  Variant="Variant.Outlined"
                                                   InputMode="InputMode.text" />
 
                                     <MudTextField @bind-Value="@Model.DeviceCodeLifetime"
@@ -49,7 +49,7 @@
                                                   For="() => Model.DeviceCodeLifetime"
                                                   Validation="Model.Validator.IsValid"
                                                   T="int"
-                                                  Variant="Variant.Filled"
+                                                  Variant="Variant.Outlined"
                                                   InputMode="InputMode.text" />
                                 </MudItem>
                                 
@@ -62,7 +62,7 @@
                                                   Validation="Model.Validator.IsValid"
                                                   HelperText="ClientClaimsPrefix"
                                                   T="string"
-                                                  Variant="Variant.Filled"
+                                                  Variant="Variant.Outlined"
                                                   InputMode="InputMode.text" />
 
                                     <MudTextField @bind-Value="@Model.ProtocolType"
@@ -72,7 +72,7 @@
                                                   For="() => Model.ProtocolType"
                                                   Validation="Model.Validator.IsValid"
                                                   T="string"
-                                                  Variant="Variant.Filled"
+                                                  Variant="Variant.Outlined"
                                                   InputMode="InputMode.text" />
 
                                     <MudTextField @bind-Value="@Model.AbsoluteRefreshTokenLifetime"
@@ -82,7 +82,7 @@
                                                   For="() => Model.AbsoluteRefreshTokenLifetime"
                                                   Validation="Model.Validator.IsValid"
                                                   T="int"
-                                                  Variant="Variant.Filled"
+                                                  Variant="Variant.Outlined"
                                                   InputMode="InputMode.numeric"
                                                   InputType="InputType.Number" />
 
@@ -97,14 +97,14 @@
                                                   For="() => Model.AccessTokenLifetime"
                                                   Validation="Model.Validator.IsValid"
                                                   T="int"
-                                                  Variant="Variant.Filled"
+                                                  Variant="Variant.Outlined"
                                                   InputMode="InputMode.numeric"
                                                   InputType="InputType.Number" />
 
                                     <MudSelect @bind-Value="@Model.AccessTokenType"
                                                AnchorOrigin="Origin.BottomCenter"
                                                Label="Тип токена авторизации"
-                                               Variant="Variant.Filled"
+                                               Variant="Variant.Outlined"
                                                HelperText="AccessTokenType"
                                                T="IdentityServer4.Models.AccessTokenType">
                                         <MudSelectItem Value="IdentityServer4.Models.AccessTokenType.Reference">@IdentityServer4.Models.AccessTokenType.Reference.ToString()</MudSelectItem>
@@ -118,7 +118,7 @@
                                                   For="() => Model.AuthorizationCodeLifetime"
                                                   Validation="Model.Validator.IsValid"
                                                   T="int"
-                                                  Variant="Variant.Filled"
+                                                      Variant="Variant.Outlined"
                                                   InputMode="InputMode.numeric"
                                                   InputType="InputType.Number" />
 
@@ -134,7 +134,7 @@
                                                       For="() => Model.ClientUri"
                                                       Validation="Model.Validator.IsValid"
                                                       T="string"
-                                                      Variant="Variant.Filled"
+                                                      Variant="Variant.Outlined"
                                                       InputMode="InputMode.text" />
 
                                         <MudTextField @bind-Value="@Model.FrontChannelLogoutUri"
@@ -145,7 +145,7 @@
                                                       For="() => Model.FrontChannelLogoutUri"
                                                       Validation="Model.Validator.IsValid"
                                                       T="string"
-                                                      Variant="Variant.Filled"
+                                                      Variant="Variant.Outlined"
                                                       InputMode="InputMode.text" />
 
                                         <MudTextField @bind-Value="@Model.BackChannelLogoutUri"
@@ -156,7 +156,7 @@
                                                       For="() => Model.ClientUri"
                                                       Validation="Model.Validator.IsValid"
                                                       T="string"
-                                                      Variant="Variant.Filled"
+                                                      Variant="Variant.Outlined"
                                                       InputMode="InputMode.text" />
 
                                 </MudItem>
@@ -170,7 +170,7 @@
                                                       For="() => Model.ConsentLifetime"
                                                       Validation="Model.Validator.IsValid"
                                                       T="int?"
-                                                      Variant="Variant.Filled"
+                                                      Variant="Variant.Outlined"
                                                       InputMode="InputMode.numeric" />
 
                                         <MudTextField @bind-Value="@Model.IdentityTokenLifetime"
@@ -180,7 +180,7 @@
                                                       For="() => Model.IdentityTokenLifetime"
                                                       Validation="Model.Validator.IsValid"
                                                       T="int"
-                                                      Variant="Variant.Filled"
+                                                      Variant="Variant.Outlined"
                                                       InputMode="InputMode.numeric"
                                                       InputType="InputType.Number"/>
 
@@ -191,7 +191,7 @@
                                                       For="() => Model.LogoUri"
                                                       Validation="Model.Validator.IsValid"
                                                       T="string"
-                                                      Variant="Variant.Filled"
+                                                      Variant="Variant.Outlined"
                                                       InputMode="InputMode.text" />
 
                                 </MudItem>
@@ -205,28 +205,28 @@
                                                       For="() => Model.PairWiseSubjectSalt"
                                                       Validation="Model.Validator.IsValid"
                                                       T="string"
-                                                      Variant="Variant.Filled"
+                                                      Variant="Variant.Outlined"
                                                       InputMode="InputMode.text" />
-                                
-                                            <MudSelect @bind-Value="@Model.RefreshTokenExpiration"
-                                                       AnchorOrigin="Origin.BottomCenter"
-                                                       Label="Тип токена авторизации"
-                                                       Variant="Variant.Filled"
-                                                       HelperText="RefreshTokenExpiration"
-                                                       T="IdentityServer4.Models.TokenExpiration">
-                                                <MudSelectItem Value="IdentityServer4.Models.TokenExpiration.Absolute">@IdentityServer4.Models.TokenExpiration.Absolute.ToString()</MudSelectItem>
-                                                <MudSelectItem Value="IdentityServer4.Models.TokenExpiration.Sliding">@IdentityServer4.Models.TokenExpiration.Sliding.ToString()</MudSelectItem>
-                                            </MudSelect>
-                                
-                                            <MudSelect @bind-Value="@Model.RefreshTokenUsage"
-                                                       AnchorOrigin="Origin.BottomCenter"
-                                                       Label="Тип токена авторизации"
-                                                       Variant="Variant.Filled"
-                                                       HelperText="RefreshTokenUsage"
-                                                       T="IdentityServer4.Models.TokenUsage">
-                                                <MudSelectItem Value="IdentityServer4.Models.TokenUsage.ReUse">@IdentityServer4.Models.TokenUsage.ReUse.ToString()</MudSelectItem>
-                                                <MudSelectItem Value="IdentityServer4.Models.TokenUsage.OneTimeOnly">@IdentityServer4.Models.TokenUsage.OneTimeOnly.ToString()</MudSelectItem>
-                                            </MudSelect>
+
+                                        <MudSelect @bind-Value="@Model.RefreshTokenExpiration"
+                                                   AnchorOrigin="Origin.BottomCenter"
+                                                   Label="Тип расчета валидности токена обновления"
+                                                   Variant="Variant.Outlined"
+                                                   HelperText="RefreshTokenExpiration"
+                                                   T="IdentityServer4.Models.TokenExpiration">
+                                            <MudSelectItem Value="IdentityServer4.Models.TokenExpiration.Absolute">@IdentityServer4.Models.TokenExpiration.Absolute.ToString()</MudSelectItem>
+                                            <MudSelectItem Value="IdentityServer4.Models.TokenExpiration.Sliding">@IdentityServer4.Models.TokenExpiration.Sliding.ToString()</MudSelectItem>
+                                        </MudSelect>
+
+                                        <MudSelect @bind-Value="@Model.RefreshTokenUsage"
+                                                   AnchorOrigin="Origin.BottomCenter"
+                                                   Label="Способ использования токена обновления"
+                                                   Variant="Variant.Outlined"
+                                                   HelperText="RefreshTokenUsage"
+                                                   T="IdentityServer4.Models.TokenUsage">
+                                            <MudSelectItem Value="IdentityServer4.Models.TokenUsage.ReUse">@IdentityServer4.Models.TokenUsage.ReUse.ToString()</MudSelectItem>
+                                            <MudSelectItem Value="IdentityServer4.Models.TokenUsage.OneTimeOnly">@IdentityServer4.Models.TokenUsage.OneTimeOnly.ToString()</MudSelectItem>
+                                        </MudSelect>
                                 
                                     </MudItem>
                                 
@@ -239,7 +239,7 @@
                                                   For="() => Model.SlidingRefreshTokenLifetime"
                                                   Validation="Model.Validator.IsValid"
                                                   T="int"
-                                                  Variant="Variant.Filled"
+                                                      Variant="Variant.Outlined"
                                                   InputMode="InputMode.numeric"
                                                   InputType="InputType.Number" />
 
@@ -254,7 +254,7 @@
                                                   For="() => Model.UserCodeType"
                                                   Validation="Model.Validator.IsValid"
                                                   T="string"
-                                                  Variant="Variant.Filled"
+                                                      Variant="Variant.Outlined"
                                                   InputMode="InputMode.text"
                                                   InputType="InputType.Text" />
 
@@ -269,7 +269,7 @@
                                                   For="() => Model.UserSsoLifetime"
                                                   Validation="Model.Validator.IsValid"
                                                   T="int?"
-                                                  Variant="Variant.Filled"
+                                                      Variant="Variant.Outlined"
                                                   InputMode="InputMode.numeric"
                                                   InputType="InputType.Number" />
 
