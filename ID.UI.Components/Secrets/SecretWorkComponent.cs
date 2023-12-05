@@ -1,7 +1,6 @@
 ﻿using ID.UI.Components.Base;
 using ID.UI.ViewModel.Secrets;
 using IdentityModel;
-using IdentityServer4.Models;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -22,6 +21,8 @@ namespace ID.UI.Components.Secrets
             {
                 if (!CurrentList.Any(x => x.Value == Model.Value))
                 {
+                    Model.Description = Model.Value;
+
                     CurrentList.Add(new SecretViewModel
                     {
                         Description = Model.Description,

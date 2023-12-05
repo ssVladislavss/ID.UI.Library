@@ -1,7 +1,9 @@
 ﻿using ID.UI.Core.ApiResources.Abstractions;
 using ID.UI.Core.ApiScopes.Abstractions;
 using ID.UI.Core.Clients.Abstractions;
+using ID.UI.Core.Options.Abstractions;
 using ID.UI.Core.State.Abstractions;
+using ID.UI.Core.Users.Abstractions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using MudBlazor;
@@ -16,6 +18,7 @@ namespace ID.UI.Components.Base
         [Inject] protected IApiResourceService? ApiResourceService { get; set; }
         [Inject] protected IApiScopeService? ApiScopeService { get; set; }
         [Inject] protected IClientService? ClientService { get; set; }
+        [Inject] protected IUserService? UserService { get; set; }
         [Inject] protected NavigationManager? Location { get; set; }
         [Inject] protected ISnackbar? Snackbar { get; set; }
         [Inject] protected IDialogService? DialogService { get; set; }
@@ -35,14 +38,29 @@ namespace ID.UI.Components.Base
                 }
             }
 
-            ApiResourceService!.OnGetToken += OnGetToken;
-            ApiResourceService!.OnTokenError += OnTokenError;
+            if(ApiResourceService is ITokenHandler resourceTokenHandler)
+            {
+                resourceTokenHandler!.OnGetToken += OnGetToken;
+                resourceTokenHandler!.OnTokenError += OnTokenError;
+            }
 
-            ApiScopeService!.OnGetToken += OnGetToken;
-            ApiScopeService!.OnTokenError += OnTokenError;
+            if (ApiScopeService is ITokenHandler scopeTokenHandler)
+            {
+                scopeTokenHandler!.OnGetToken += OnGetToken;
+                scopeTokenHandler!.OnTokenError += OnTokenError;
+            }
 
-            ClientService!.OnGetToken += OnGetToken;
-            ClientService!.OnTokenError += OnTokenError;
+            if (ClientService is ITokenHandler clientTokenHandler)
+            {
+                clientTokenHandler!.OnGetToken += OnGetToken;
+                clientTokenHandler!.OnTokenError += OnTokenError;
+            }
+
+            if(UserService is ITokenHandler userTokenHandler)
+            {
+                userTokenHandler!.OnGetToken += OnGetToken;
+                userTokenHandler!.OnTokenError += OnTokenError;
+            }
 
             await base.OnParametersSetAsync();
         }

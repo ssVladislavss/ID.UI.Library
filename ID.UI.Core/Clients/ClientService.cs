@@ -1,16 +1,16 @@
-﻿using ID.UI.Core.ApiScopes;
-using ID.UI.Core.Clients.Abstractions;
+﻿using ID.UI.Core.Clients.Abstractions;
 using ID.UI.Core.Clients.Models;
+using ID.UI.Core.Options.Abstractions;
 using IdentityServer4.Models;
 
 namespace ID.UI.Core.Clients
 {
-    public class ClientService : IClientService
+    public class ClientService : IClientService, ITokenHandler
     {
         protected readonly IClientProvider _clientProvider;
 
-        public event IClientService.GetTokenHandler? OnGetToken;
-        public event IClientService.TokenErrorHandler? OnTokenError;
+        public event ITokenHandler.GetTokenHandler? OnGetToken;
+        public event ITokenHandler.TokenErrorHandler? OnTokenError;
 
         public ClientService(IClientProvider clientProvider)
         {

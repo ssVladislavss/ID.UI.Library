@@ -2,20 +2,24 @@
 
 @if (CurrentList.Any())
 {
-    <MudStack Spacing="1">
-        <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Primary">@CurrentTitle</MudText>
+    <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Style="max-height: 450px; overflow-y: scroll">
+        <MudStack Spacing="1">
+            <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Primary">@CurrentTitle</MudText>
 
-        <MudList Clickable="true" Dense="true" DisableGutters="true">
-            @foreach (var item in CurrentList)
-            {
-                <MudListItem Icon="@Icons.Material.Filled.DeleteOutline"
-                             IconColor="Color.Error"
-                             OnClick="() => RemoveUrlInCurrentList(item)">
-                    @item
-                </MudListItem>
-            }
-        </MudList>
-    </MudStack>
+                <MudList Clickable="true" Dense="true" DisableGutters="true">
+                    @foreach (var item in CurrentList)
+                    {
+                        <MudText Typo="Typo.body1">
+                            <MudIconButton Icon="@Icons.Material.Filled.DeleteOutline"
+                                           Color="Color.Error"
+                                           Class="mr-3 mb-n1"
+                                           OnClick="() => RemoveUrlInCurrentList(item)" />
+                            @item
+                        </MudText>
+                    }
+                </MudList>
+        </MudStack>
+    </MudContainer>
 }
 
 <MudStack Spacing="3">

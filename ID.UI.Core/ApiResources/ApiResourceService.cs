@@ -1,14 +1,15 @@
 ﻿using ID.UI.Core.ApiResources.Abstractions;
 using ID.UI.Core.ApiResources.Models;
+using ID.UI.Core.Options.Abstractions;
 
 namespace ID.UI.Core.ApiResources
 {
-    public class ApiResourceService : IApiResourceService
+    public class ApiResourceService : IApiResourceService, ITokenHandler
     {
         protected readonly IApiResorceProvider _apiResorceProvider;
 
-        public event IApiResourceService.GetTokenHandler? OnGetToken;
-        public event IApiResourceService.TokenErrorHandler? OnTokenError;
+        public event ITokenHandler.GetTokenHandler? OnGetToken;
+        public event ITokenHandler.TokenErrorHandler? OnTokenError;
 
         public ApiResourceService(IApiResorceProvider apiResorceProvider)
         {

@@ -1,14 +1,15 @@
 ﻿using ID.UI.Core.ApiScopes.Abstractions;
 using ID.UI.Core.ApiScopes.Models;
+using ID.UI.Core.Options.Abstractions;
 
 namespace ID.UI.Core.ApiScopes
 {
-    public class ApiScopeService : IApiScopeService
+    public class ApiScopeService : IApiScopeService, ITokenHandler
     {
         protected readonly IApiScopeProvider _apiScopeProvider;
 
-        public event IApiScopeService.GetTokenHandler? OnGetToken;
-        public event IApiScopeService.TokenErrorHandler? OnTokenError;
+        public event ITokenHandler.GetTokenHandler? OnGetToken;
+        public event ITokenHandler.TokenErrorHandler? OnTokenError;
 
         public ApiScopeService(IApiScopeProvider apiScopeProvider)
         {

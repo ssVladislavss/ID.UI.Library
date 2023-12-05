@@ -2,12 +2,8 @@
 using ID.UI.Components.ApiResources.Edit;
 using ID.UI.Components.Base;
 using ID.UI.Core.ApiResources;
-using ID.UI.Core.ApiResources.Abstractions;
 using ID.UI.Core.ApiResources.Models;
 using ID.UI.Core.ApiScopes;
-using ID.UI.Core.ApiScopes.Abstractions;
-using IdentityServer4.Models;
-using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
 namespace ID.UI.Components.ApiResources.List

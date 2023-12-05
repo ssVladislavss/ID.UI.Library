@@ -3,8 +3,12 @@
 <MudDialog DisableSidePadding="true">
     <TitleContent>
         <MudText Typo="Typo.h6">
-            <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
+            <MudIcon Icon="@Icons.Material.Filled.Create" Color="Color.Primary" Class="mr-3 mb-n1" />
             Форма редактирования данных клиентского приложения
+        </MudText>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.PermIdentity" Color="Color.Primary" Class="mr-3 mb-n1" />
+            @Model.ClientId
         </MudText>
     </TitleContent>
 

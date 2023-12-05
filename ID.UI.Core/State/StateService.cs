@@ -47,7 +47,7 @@ namespace ID.UI.Core.State
                 ClientSecret = _stateOptions.ClientSecret,
                 UserName = data.Email,
                 Password = data.Password,
-                Scope = "service_id_api offline_access"
+                Scope = _stateOptions.Scopes
             });
 
             if (authenticateResult.IsError)
@@ -86,7 +86,7 @@ namespace ID.UI.Core.State
                     var refreshResult = await client.RequestRefreshTokenAsync(new RefreshTokenRequest
                     { 
                         RefreshToken = currentState.RefreshToken,
-                        Scope = "service_id_api offline_access",
+                        Scope = _stateOptions.Scopes,
                         Address = _apiOptions.IDUrl.AbsoluteUri + "connect/token",
                         ClientId = _stateOptions.ClientId,
                         ClientSecret = _stateOptions.ClientSecret,
@@ -106,6 +106,8 @@ namespace ID.UI.Core.State
                     else
                         return new ClaimsPrincipal();
                 }
+
+                await _localStorageService.RemoveItemAsync(StorageStateKey);
 
                 return new ClaimsPrincipal();
             }
@@ -137,7 +139,7 @@ namespace ID.UI.Core.State
                 var refreshResult = await client.RequestRefreshTokenAsync(new RefreshTokenRequest
                 {
                     RefreshToken = currentToken.RefreshToken,
-                    Scope = "service_id_api offline_access",
+                    Scope = _stateOptions.Scopes,
                     Address = _apiOptions.IDUrl.AbsoluteUri + "connect/token",
                     ClientId = _stateOptions.ClientId,
                     ClientSecret = _stateOptions.ClientSecret,

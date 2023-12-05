@@ -4,11 +4,6 @@ namespace ID.UI.Core.ApiResources.Abstractions
 {
     public interface IApiResourceService
     {
-        delegate Task<string?> GetTokenHandler();
-        delegate Task TokenErrorHandler();
-        event GetTokenHandler? OnGetToken;
-        event TokenErrorHandler? OnTokenError;
-
         Task<AjaxResult<IEnumerable<IDApiResource>>> GetAsync(ApiResourceSearchFilter filter);
         Task<AjaxResult<IDApiResource>> FindAsync(int resourceId);
         Task<AjaxResult<IDApiResource>> CreateAsync(CreateApiResourceModel data);
