@@ -1,0 +1,52 @@
+﻿@inherits RolesComponent
+
+<ServerLoading Show="OverlayEnabled" />
+
+<MudStack Justify="@(SelectedRoles.Count == 0 ? Justify.FlexEnd : Justify.SpaceBetween)" Row="true" Class="mb-3">
+    @if (SelectedRoles.Count != 0)
+    {
+        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Create"
+                   Style="width: 200px; height: 60px;" Color="Color.Error" OnClick="DeleteSelectedRolesAsync">
+            Удалить
+        </MudButton>
+    }
+
+    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Create"
+               Style="width: 200px; height: 60px;" Color="Color.Primary" OnClick="ShowCreateRoleDialogAsync">
+        Создать новую роль
+    </MudButton>
+</MudStack>
+
+<MudTable @ref="RoleTable"
+          Loading="OverlayEnabled"
+          T="ID.UI.Core.Roles.RoleModel"
+          Items="@Roles"
+          MultiSelection="true"
+          @bind-SelectedItems="SelectedRoles"
+          Hover="true" SelectOnRowClick="false">
+
+    <HeaderContent>
+        <MudTh>Идентификатор</MudTh>
+        <MudTh>Наименование</MudTh>
+    </HeaderContent>
+
+    <NoRecordsContent>
+        <MudText Typo="Typo.body1">Пока нет ниодной записи</MudText>
+    </NoRecordsContent>
+
+    <RowTemplate>
+        <MudTd DataLabel="Идентификатор">@context.RoleId</MudTd>
+        <MudTd DataLabel="Наименование">@context.RoleName</MudTd>
+        <MudTd>
+            <MudFab StartIcon="@Icons.Material.Filled.EditNote"
+                    Size="Size.Medium"
+                    Color="Color.Primary"
+                    DisableElevation="true"
+                    OnClick="() => ShowEditRoleDialogAsync(context)" />
+        </MudTd>
+    </RowTemplate>
+
+    <PagerContent>
+        <MudTablePager PageSizeOptions="new int[]{50, 100}" />
+    </PagerContent>
+</MudTable>

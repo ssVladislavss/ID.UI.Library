@@ -1,4 +1,6 @@
-﻿using ID.UI.Core.Clients.Models;
+﻿using ID.UI.Core.Claims.Models;
+using ID.UI.Core.Clients.Models;
+using ID.UI.ViewModel.Claims;
 using ID.UI.ViewModel.Clients.Validators;
 using ID.UI.ViewModel.Secrets;
 using IdentityServer4.Models;
@@ -44,7 +46,7 @@ namespace ID.UI.ViewModel.Clients
         public bool EnableLocalLogin { get; set; } = true;
         public List<string> IdentityProviderRestrictions { get; set; } = new List<string>();
         public bool IncludeJwtId { get; set; } = true;
-        public List<ClientClaimViewModel> Claims { get; set; } = new List<ClientClaimViewModel>();
+        public List<ClaimViewModel> Claims { get; set; } = new List<ClaimViewModel>();
         public bool AlwaysSendClientClaims { get; set; } = false;
         public string? ClientClaimsPrefix { get; set; } = "client_";
         public string? PairWiseSubjectSalt { get; set; }
@@ -101,7 +103,7 @@ namespace ID.UI.ViewModel.Clients
                 EnableLocalLogin = this.EnableLocalLogin,
                 IdentityProviderRestrictions = this.IdentityProviderRestrictions.ToList(),
                 IncludeJwtId = this.IncludeJwtId,
-                Claims = this.Claims.Select(x => new ClientClaimModel { Value = x.Value, Type = x.Type }).ToList(),
+                Claims = this.Claims.Select(x => new ClaimModel { Value = x.Value, Type = x.Type }).ToList(),
                 AlwaysSendClientClaims = this.AlwaysSendClientClaims,
                 ClientClaimsPrefix = this.ClientClaimsPrefix,
                 PairWiseSubjectSalt = this.PairWiseSubjectSalt,

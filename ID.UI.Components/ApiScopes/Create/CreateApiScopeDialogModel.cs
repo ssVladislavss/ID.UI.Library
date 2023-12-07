@@ -1,5 +1,4 @@
 ﻿using ID.UI.Components.Base;
-using ID.UI.Core.ApiScopes.Abstractions;
 using ID.UI.Core.ApiScopes.Models;
 using ID.UI.ViewModel.ApiScopes;
 using Microsoft.AspNetCore.Components;

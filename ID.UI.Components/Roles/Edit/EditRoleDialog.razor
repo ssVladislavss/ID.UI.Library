@@ -1,0 +1,47 @@
+﻿@inherits EditRoleComponent
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
+            Форма изменения данных роли
+        </MudText>
+    </TitleContent>
+
+    <DialogContent>
+        <ServerLoading Show="OverlayEnabled" />
+        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Style="max-height: 500px; overflow-y: scroll">
+
+            <MudTabs Elevation="1" Rounded="true" PanelClass="pa-6" KeepPanelsAlive="true">
+
+                <MudTabPanel Text="Основные данные">
+                    <ChildContent>
+                        <MudForm @ref="ModelForm" Model="Model">
+                            <MudTextField @bind-Value="@Model.RoleName"
+                                          Label="Наименование"
+                                          AutoFocus="true"
+                                          Immediate="true"
+                                          Class="mb-3"
+                                          For="() => Model.RoleName"
+                                          Validation="Model.Validator.IsValid"
+                                          T="string"
+                                          InputMode="InputMode.text" />
+                        </MudForm>
+                    </ChildContent>
+                </MudTabPanel>
+
+                <MudTabPanel Text="Утверждения роли">
+                    <ChildContent>
+                        <ID.UI.Components.Claims.SetClaims CurrentClaims="Model.Claims" />
+                    </ChildContent>
+                </MudTabPanel>
+
+            </MudTabs>
+
+        </MudContainer>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton Color="Color.Primary" Disabled="!ModelForm.IsValid" Variant="Variant.Filled" OnClick="UpdateRoleAsync">Сохранить</MudButton>
+    </DialogActions>
+</MudDialog>

@@ -24,6 +24,14 @@ namespace ID.UI.Components.Clients.List
             }
         }
 
+        protected override async Task OnParametersSetAsync()
+        {
+            if(ClientService is null)
+                throw new ArgumentNullException(nameof(ClientService));
+
+            await base.OnParametersSetAsync();
+        }
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)

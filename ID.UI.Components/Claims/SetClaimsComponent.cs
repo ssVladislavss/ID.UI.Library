@@ -1,30 +1,30 @@
 ﻿using ID.UI.Components.Base;
-using ID.UI.ViewModel.Clients;
+using ID.UI.ViewModel.Claims;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace ID.UI.Components.Clients.ClientClaims
+namespace ID.UI.Components.Claims
 {
-    public class ClientClaimsComponent : IDBaseComponent
+    public class SetClaimsComponent : IDBaseComponent
     {
-        [Parameter] public List<ClientClaimViewModel> CurrentClaims { get; set; } = new List<ClientClaimViewModel>();
+        [Parameter] public List<ClaimViewModel> CurrentClaims { get; set; } = new List<ClaimViewModel>();
 
-        protected ClientClaimViewModel Model { get; set; } = new ClientClaimViewModel();
+        protected ClaimViewModel Model { get; set; } = new ClaimViewModel();
         protected MudForm ModelForm { get; set; } = new MudForm();
 
         protected virtual async Task AddClaimToListAsync()
         {
             await ModelForm.Validate();
 
-            if(ModelForm.IsValid)
+            if (ModelForm.IsValid)
             {
-                if(CurrentClaims.Any(x => x.Type == Model.Type || x.Value == Model.Value))
+                if (CurrentClaims.Any(x => x.Type == Model.Type && x.Value == Model.Value))
                 {
                     return;
                 }
                 else
                 {
-                    CurrentClaims.Add(new ClientClaimViewModel()
+                    CurrentClaims.Add(new ClaimViewModel()
                     {
                         Value = Model.Value,
                         Type = Model.Type,
@@ -35,7 +35,7 @@ namespace ID.UI.Components.Clients.ClientClaims
             }
         }
 
-        protected virtual void RemoveClaimInList(ClientClaimViewModel model)
+        protected virtual void RemoveClaimInList(ClaimViewModel model)
         {
             CurrentClaims.Remove(model);
         }

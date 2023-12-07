@@ -1,4 +1,5 @@
-﻿using ID.UI.Core.Roles;
+﻿using ID.UI.Core.Claims.Models;
+using ID.UI.Core.Roles;
 
 namespace ID.UI.Core.Users
 {
@@ -15,5 +16,6 @@ namespace ID.UI.Core.Users
         public string? SecondName { get; set; }
         public DateTime? BirthDate { get; set; }
         public IEnumerable<RoleModel> Roles { get; set; } = Enumerable.Empty<RoleModel>();
+        public IEnumerable<ClaimModel> Claims { get; set; } = Enumerable.Empty<ClaimModel>();
     }
 }

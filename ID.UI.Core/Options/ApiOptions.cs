@@ -2,6 +2,7 @@
 {
     public class ApiOptions
     {
+        public const string ApiKey = "apiParameters";
         public Uri IDUrl { get; set; }
 
         public ApiOptions()

@@ -63,7 +63,7 @@ namespace ID.UI.Core.State
                 await _localStorageService.SetItemAsync
                     (StorageStateKey, new StorageStateModel
                                  (authenticateResult.AccessToken,
-                                  DateTime.Now.AddSeconds(authenticateResult.ExpiresIn).AddMinutes(-5),
+                                  DateTime.Now.AddSeconds(authenticateResult.ExpiresIn).AddMinutes(-3),
                                   refreshToken));
 
             var claimsIdentity = new ClaimsIdentity(identity.Claims, identity.Issuer, JwtClaimTypes.Name, JwtClaimTypes.Role);

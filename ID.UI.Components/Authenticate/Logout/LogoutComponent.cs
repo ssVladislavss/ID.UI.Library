@@ -1,6 +1,7 @@
 ﻿using ID.UI.Components.Base;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using System.Net;
 
 namespace ID.UI.Components.Authenticate.Logout
 {
@@ -10,15 +11,13 @@ namespace ID.UI.Components.Authenticate.Logout
         [Parameter] public Color Color { get; set; } = Color.Primary;
         [Parameter] public bool DisableElevation { get; set; }
 
-        protected async Task LogoutAsync()
+        protected override async Task OnTokenErrorAsync(HttpStatusCode? statusCode = null)
         {
             OverlayEnabled = true;
 
             StateHasChanged();
 
-            await StateService!.LogoutAsync();
-
-            Location?.NavigateTo(Location!.Uri, true);
+            await base.OnTokenErrorAsync(statusCode);
         }
     }
 }

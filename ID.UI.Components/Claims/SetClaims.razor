@@ -1,4 +1,4 @@
-﻿@inherits ClientClaimsComponent
+﻿@inherits SetClaimsComponent
 
 @if (CurrentClaims.Count > 0)
 {
@@ -8,18 +8,19 @@
         <MudList Clickable="true" Dense="true" DisableGutters="true">
             @foreach (var claim in CurrentClaims)
             {
-                <MudListItem Icon="@Icons.Material.Filled.DeleteOutline"
-                             IconColor="Color.Error"
-                             OnClick="() => RemoveClaimInList(claim)">
+                <MudText Typo="Typo.body1">
+                    <MudIconButton Icon="@Icons.Material.Filled.DeleteOutline"
+                                   Color="Color.Error"
+                                   Class="mr-3 mb-n1"
+                                   OnClick="() => RemoveClaimInList(claim)" />
                     @claim.Type - @claim.Value
-                </MudListItem>
+                </MudText>
             }
         </MudList>
     </MudStack>
 }
 
 <MudStack Spacing="3">
-    <MudText Align="Align.Center" Typo="Typo.h6" Color="Color.Primary">Добавить новое утверждение</MudText>
     <MudForm @ref="ModelForm" Model="Model">
         <MudTextField @bind-Value="@Model.Type"
                       Label="Тип утверждения (обязательно)"
@@ -44,5 +45,5 @@
                Variant="Variant.Filled"
                Disabled="!ModelForm.IsValid"
                Size="Size.Small"
-               OnClick="AddClaimToListAsync">Сохранить</MudButton>
+               OnClick="AddClaimToListAsync">Добавить в список</MudButton>
 </MudStack>

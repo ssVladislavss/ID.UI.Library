@@ -1,0 +1,90 @@
+﻿@inherits EditUserComponent
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
+            Форма изменения данных пользователя
+        </MudText>
+    </TitleContent>
+
+    <DialogContent>
+        <ServerLoading Show="OverlayEnabled" />
+        <MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Style="max-height: 500px; overflow-y: scroll">
+
+            <MudTabs Elevation="1" Rounded="true" PanelClass="pa-6" KeepPanelsAlive="true">
+
+                <MudTabPanel Text="Основные данные">
+                    <ChildContent>
+                        @if (!Roles.Any() && RolesNoContent != null)
+                        {
+                            @RolesNoContent
+                        }
+                        else
+                        {
+                            <MudForm @ref="ModelForm" Model="Model">
+
+                                <MudTextField @bind-Value="@Model.LastName"
+                                              Label="Фамилия"
+                                              Immediate="true"
+                                              AutoFocus="true"
+                                              For="() => Model.LastName"
+                                              Validation="Model.Validator.IsValid"
+                                              T="string"
+                                              InputMode="InputMode.text"
+                                              InputType="InputType.Text" />
+
+                                <MudTextField @bind-Value="@Model.FirstName"
+                                              Label="Имя"
+                                              Immediate="true"
+                                              For="() => Model.FirstName"
+                                              Validation="Model.Validator.IsValid"
+                                              T="string"
+                                              InputMode="InputMode.text"
+                                              InputType="InputType.Text" />
+
+                                <MudTextField @bind-Value="@Model.SecondName"
+                                              Label="Отчество"
+                                              Immediate="true"
+                                              For="() => Model.SecondName"
+                                              Validation="Model.Validator.IsValid"
+                                              T="string"
+                                              InputMode="InputMode.text"
+                                              InputType="InputType.Text" />
+
+                                <MudSelect SelectedValues="Model.RoleNames"
+                                           AnchorOrigin="Origin.BottomCenter"
+                                           T="string"
+                                           Clearable="true"
+                                           MultiSelection="true"
+                                           SelectedValuesChanged="OnChangeSelectedRoles"
+                                           Delimiter=", "
+                                           Label="Выберите роли пользователя"
+                                           Required="true"
+                                           HelperText="Необходимо, чтобы у пользователя была хотя бы одна роль"
+                                           ErrorText="Укажите хотя бы одну роль">
+                                    @foreach (var role in Roles)
+                                    {
+                                        <MudSelectItem Value="@role.RoleName">@role.RoleName</MudSelectItem>
+                                    }
+                                </MudSelect>
+                            </MudForm>
+                        }
+                    </ChildContent>
+                </MudTabPanel>
+
+                <MudTabPanel Text="Утверждения пользователя">
+                    <ChildContent>
+                        <ID.UI.Components.Claims.SetClaims CurrentClaims="Model.Claims" />
+                    </ChildContent>
+                </MudTabPanel>
+
+            </MudTabs>
+
+        </MudContainer>
+    </DialogContent>
+
+    <DialogActions>
+        <MudButton Color="Color.Primary" Disabled="!ModelForm.IsValid || Model.RoleNames.Count <= 0" Variant="Variant.Filled" OnClick="UpdateUserAsync">Сохранить</MudButton>
+    </DialogActions>
+</MudDialog>

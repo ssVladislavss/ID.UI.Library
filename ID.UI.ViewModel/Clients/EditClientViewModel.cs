@@ -1,4 +1,6 @@
-﻿using ID.UI.Core.Clients.Models;
+﻿using ID.UI.Core.Claims.Models;
+using ID.UI.Core.Clients.Models;
+using ID.UI.ViewModel.Claims;
 using ID.UI.ViewModel.Clients.Validators;
 using ID.UI.ViewModel.Secrets;
 using IdentityServer4.Models;
@@ -46,7 +48,7 @@ namespace ID.UI.ViewModel.Clients
         public bool EnableLocalLogin { get; set; } = true;
         public List<string> IdentityProviderRestrictions { get; set; } = new List<string>();
         public bool IncludeJwtId { get; set; } = true;
-        public List<ClientClaimViewModel> Claims { get; set; } = new List<ClientClaimViewModel>();
+        public List<ClaimViewModel> Claims { get; set; } = new List<ClaimViewModel>();
         public bool AlwaysSendClientClaims { get; set; } = false;
         public string? ClientClaimsPrefix { get; set; } = "client_";
         public string? PairWiseSubjectSalt { get; set; }
@@ -104,7 +106,7 @@ namespace ID.UI.ViewModel.Clients
                 EnableLocalLogin = model.EnableLocalLogin;
                 IdentityProviderRestrictions = model.IdentityProviderRestrictions.ToList();
                 IncludeJwtId = model.IncludeJwtId;
-                Claims = model.Claims.Select(x => new ClientClaimViewModel(x)).ToList();
+                Claims = model.Claims.Select(x => new ClaimViewModel(x)).ToList();
                 AlwaysSendClientClaims = model.AlwaysSendClientClaims;
                 ClientClaimsPrefix = model.ClientClaimsPrefix;
                 PairWiseSubjectSalt = model.PairWiseSubjectSalt;
@@ -159,7 +161,7 @@ namespace ID.UI.ViewModel.Clients
                 EnableLocalLogin = EnableLocalLogin,
                 IdentityProviderRestrictions = IdentityProviderRestrictions,
                 IncludeJwtId = IncludeJwtId,
-                Claims = Claims.Select(x => new ClientClaimModel { Type = x.Type, Value = x.Value }).ToList(),
+                Claims = Claims.Select(x => new ClaimModel { Type = x.Type, Value = x.Value }).ToList(),
                 AlwaysSendClientClaims = AlwaysSendClientClaims,
                 ClientClaimsPrefix = ClientClaimsPrefix,
                 PairWiseSubjectSalt = PairWiseSubjectSalt,

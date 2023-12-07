@@ -1,4 +1,5 @@
-﻿using IdentityServer4.Models;
+﻿using ID.UI.Core.Claims.Models;
+using IdentityServer4.Models;
 
 namespace ID.UI.Core.Clients.Models
 {
@@ -42,7 +43,7 @@ namespace ID.UI.Core.Clients.Models
         public bool EnableLocalLogin { get; set; } = true;
         public List<string> IdentityProviderRestrictions { get; set; } = new List<string>();
         public bool IncludeJwtId { get; set; } = true;
-        public List<ClientClaimModel> Claims { get; set; } = new List<ClientClaimModel>();
+        public List<ClaimModel> Claims { get; set; } = new List<ClaimModel>();
         public bool AlwaysSendClientClaims { get; set; } = false;
         public string? ClientClaimsPrefix { get; set; } = "client_";
         public string? PairWiseSubjectSalt { get; set; }

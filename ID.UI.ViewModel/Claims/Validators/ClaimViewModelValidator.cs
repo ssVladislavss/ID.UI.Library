@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace ID.UI.ViewModel.Clients.Validators
+namespace ID.UI.ViewModel.Claims.Validators
 {
-    public class ClientClaimViewModelValidator : AbstractValidator<ClientClaimViewModel>
+    public class ClaimViewModelValidator : AbstractValidator<ClaimViewModel>
     {
-        public ClientClaimViewModelValidator()
+        public ClaimViewModelValidator()
         {
             RuleFor(x => x.Type)
                 .NotNull().WithMessage("Укажите тип утверждения")
@@ -16,8 +16,8 @@ namespace ID.UI.ViewModel.Clients.Validators
 
         public Func<object, string, Task<IEnumerable<string>>> IsValid => async (model, propertyName) =>
         {
-            var result = await ValidateAsync(ValidationContext<ClientClaimViewModel>
-                .CreateWithOptions((ClientClaimViewModel)model, x => x.IncludeProperties(propertyName)));
+            var result = await ValidateAsync(ValidationContext<ClaimViewModel>
+                .CreateWithOptions((ClaimViewModel)model, x => x.IncludeProperties(propertyName)));
             if (result.IsValid)
                 return Array.Empty<string>();
             return new List<string>() { result.Errors[0].ErrorMessage };

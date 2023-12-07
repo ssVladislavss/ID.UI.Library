@@ -3,7 +3,10 @@ using ID.UI.Core.Options;
 using ID.UI.Core.Users;
 using ID.UI.Core.Users.Abstractions;
 using ID.UI.Core.Users.Models;
+using IdentityModel.Client;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System.Net.Http.Json;
 
 namespace ID.UI.Providers.API.ID.Users
 {
@@ -12,7 +15,7 @@ namespace ID.UI.Providers.API.ID.Users
         protected readonly IHttpClientFactory _httpClientFactory;
         protected readonly ApiOptions _apiOptions;
 
-        protected string _accessTolen = string.Empty;
+        protected string _accessToken = string.Empty;
 
         public UserProvider
             (IHttpClientFactory httpClientFactory,
@@ -24,32 +27,164 @@ namespace ID.UI.Providers.API.ID.Users
 
         public void WithAccessToken(string accessToken)
         {
-            _accessTolen = accessToken;
+            _accessToken = accessToken;
         }
 
-        public Task<AjaxResult<UserModel>> CreateAsync(CreateUserModel data)
+        public async Task<AjaxResult<CreateUserResultModel>> CreateAsync(CreateUserModel data)
         {
-            throw new NotImplementedException();
+            using var client = _httpClientFactory.CreateClient();
+            client.SetBearerToken(this._accessToken);
+
+            try
+            {
+                var sendResult = await client.PostAsJsonAsync(_apiOptions.IDUrl.AbsoluteUri + "api/user/create", data);
+
+                if (sendResult.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
+                   sendResult.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    return AjaxResult<CreateUserResultModel>.Error("Доступ запрещён", sendResult.StatusCode);
+                }
+
+                sendResult.EnsureSuccessStatusCode();
+
+                var result = JsonConvert.DeserializeObject<AjaxResult<CreateUserResultModel>>
+                    (await sendResult.Content.ReadAsStringAsync());
+
+                if (result == null)
+                    return AjaxResult<CreateUserResultModel>.Error("Не удалось добавить пользователя");
+
+                return result;
+            }
+            catch
+            {
+                return AjaxResult<CreateUserResultModel>.Error("Произошла неизвестная ошибка");
+            }
         }
 
-        public Task<AjaxResult> DeleteAsync(string userId)
+        public async Task<AjaxResult> DeleteAsync(string userId)
         {
-            throw new NotImplementedException();
+            using var client = _httpClientFactory.CreateClient();
+            client.SetBearerToken(this._accessToken);
+
+            try
+            {
+                var sendResult = await client.DeleteAsync(_apiOptions.IDUrl.AbsoluteUri + $"api/user/{userId}/remove");
+
+                if (sendResult.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
+                   sendResult.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    return AjaxResult.Error("Доступ запрещён", sendResult.StatusCode);
+                }
+
+                sendResult.EnsureSuccessStatusCode();
+
+                var result = JsonConvert.DeserializeObject<AjaxResult>
+                    (await sendResult.Content.ReadAsStringAsync());
+
+                if (result == null)
+                    return AjaxResult.Error("Не удалось удалить данные пользователя");
+
+                return result;
+            }
+            catch
+            {
+                return AjaxResult.Error("Произошла неизвестная ошибка");
+            }
         }
 
-        public Task<AjaxResult<UserModel>> FindByIdAsync(string userId)
+        public async Task<AjaxResult<UserModel>> FindByIdAsync(string userId)
         {
-            throw new NotImplementedException();
+            using var client = _httpClientFactory.CreateClient();
+            client.SetBearerToken(this._accessToken);
+
+            try
+            {
+                var sendResult = await client.GetAsync(_apiOptions.IDUrl.AbsoluteUri + $"api/user/{userId}");
+
+                if (sendResult.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
+                   sendResult.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    return AjaxResult<UserModel>.Error("Доступ запрещён", sendResult.StatusCode);
+                }
+
+                sendResult.EnsureSuccessStatusCode();
+
+                var result = JsonConvert.DeserializeObject<AjaxResult<UserModel>>
+                    (await sendResult.Content.ReadAsStringAsync());
+
+                if (result == null)
+                    return AjaxResult<UserModel>.Error("Не удалось получить данные пользователя");
+
+                return result;
+            }
+            catch
+            {
+                return AjaxResult<UserModel>.Error("Произошла неизвестная ошибка");
+            }
         }
 
-        public Task<AjaxResult<IEnumerable<UserModel>>> GetAsync(UserSearchFilter filter)
+        public async Task<AjaxResult<IEnumerable<UserModel>>> GetAsync(UserSearchFilter filter)
         {
-            throw new NotImplementedException();
+            using var client = _httpClientFactory.CreateClient();
+            client.SetBearerToken(this._accessToken);
+
+            try
+            {
+                var sendResult = await client.GetAsync(_apiOptions.IDUrl.AbsoluteUri + $"api/user?lastName={filter.LastName}&firstName={filter.FirstName}" + 
+                    $"&secondName={filter.SecondName}&email={filter.Email}&birthDate={filter.BirthDate}&phone={filter.Phone}" + 
+                    $"&role={filter.Role}");
+
+                if (sendResult.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
+                   sendResult.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    return AjaxResult<IEnumerable<UserModel>>.Error("Доступ запрещён", sendResult.StatusCode);
+                }
+
+                sendResult.EnsureSuccessStatusCode();
+
+                var result = JsonConvert.DeserializeObject<AjaxResult<IEnumerable<UserModel>>>
+                    (await sendResult.Content.ReadAsStringAsync());
+
+                if (result == null)
+                    return AjaxResult<IEnumerable<UserModel>>.Error("Не удалось получить данные пользователей");
+
+                return result;
+            }
+            catch
+            {
+                return AjaxResult<IEnumerable<UserModel>>.Error("Произошла неизвестная ошибка");
+            }
         }
 
-        public Task<AjaxResult> UpdateAsync(EditUserModel data)
+        public async Task<AjaxResult> UpdateAsync(EditUserModel data)
         {
-            throw new NotImplementedException();
+            using var client = _httpClientFactory.CreateClient();
+            client.SetBearerToken(this._accessToken);
+
+            try
+            {
+                var sendResult = await client.PutAsJsonAsync(_apiOptions.IDUrl.AbsoluteUri + "api/user/edit", data);
+
+                if (sendResult.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
+                   sendResult.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    return AjaxResult.Error("Доступ запрещён", sendResult.StatusCode);
+                }
+
+                sendResult.EnsureSuccessStatusCode();
+
+                var result = JsonConvert.DeserializeObject<AjaxResult>
+                    (await sendResult.Content.ReadAsStringAsync());
+
+                if (result == null)
+                    return AjaxResult.Error("Не удалось обновить данные приложения");
+
+                return result;
+            }
+            catch
+            {
+                return AjaxResult.Error("Произошла неизвестная ошибка");
+            }
         }
     }
 }

@@ -22,4 +22,8 @@
     <ProjectReference Include="..\ID.UI.ViewModel\ID.UI.ViewModel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Clients\ClientClaims\" />
+  </ItemGroup>
+
 </Project>
