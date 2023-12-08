@@ -3,6 +3,7 @@ using ID.UI.Components.Users.Create;
 using ID.UI.Components.Users.Edit;
 using ID.UI.Core.Users;
 using ID.UI.Core.Users.Models;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
 namespace ID.UI.Components.Users.List
@@ -121,6 +122,7 @@ namespace ID.UI.Components.Users.List
                     editingUser.FirstName = updatedUser.FirstName;
                     editingUser.SecondName = updatedUser.SecondName;
                     editingUser.Roles = updatedUser.RoleNames.Select(x => new Core.Roles.RoleModel { RoleName = x });
+                    editingUser.Claims = updatedUser.Claims;
                 }
         }
     }

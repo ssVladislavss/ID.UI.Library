@@ -3,9 +3,16 @@
 <MudDialog>
     <TitleContent>
         <MudText Typo="Typo.h6">
-            <MudIcon Icon="@Icons.Material.Filled.Create" Class="mr-3 mb-n1" />
+            <MudIcon Icon="@Icons.Material.Filled.Create" Color="Color.Primary" Class="mr-3 mb-n1" />
             Форма регистрации пользователя
         </MudText>
+        @* @if (!Roles.Any())
+        {
+            <MudText Typo="Typo.body1" Color="Color.Warning">
+                <MudIcon Icon="@Icons.Material.Filled.Warning" Class="mr-3 mb-n1" />
+                Не удалось загрузить доступные роли, обновите страницу или попробуйте позднее
+            </MudText>
+        } *@
     </TitleContent>
 
     <DialogContent>
@@ -72,15 +79,13 @@
                         }
                     </MudSelect>
 
-                    <MudDivider Class="my-3" />
-
                     <MudTextField @bind-Value="@Model.Password"
                                   Label="Ваш пароль"
                                   Immediate="true"
                                   For="() => Model.Password"
                                   Validation="Model.Validator.IsValid"
                                   T="string"
-                                  HelperText="Вы можете указать свой пароль здесь, если не укажете пароль сгенерируется динамически"
+                                  HelperText="Вы можете указать свой пароль здесь, если не укажете, пароль сгенерируется динамически"
                                   InputMode="InputMode.text"
                                   InputType="InputType.Password" />
                 </MudForm>
@@ -105,7 +110,7 @@
     </DialogContent>
 
     <DialogActions>
-        @if(CreatedUser == null)
+        @if(CreatedUser == null && Roles.Any())
         {
             <MudButton Color="Color.Primary"
                        Disabled="!ModelForm.IsValid && Model.RoleNames.Count <= 0"
