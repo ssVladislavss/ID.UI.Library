@@ -76,7 +76,7 @@ namespace ID.UI.Components.Roles.List
                         _roles.Remove(role);
                     }
                     else
-                        Snackbar?.Add($"{role.RoleName} - {deletedResult.Message}");
+                        Snackbar?.Add($"{role.RoleName} - {deletedResult.Message}", Severity.Error);
                 }
 
                 OverlayEnabled = false;

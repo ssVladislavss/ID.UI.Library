@@ -80,11 +80,15 @@ namespace ID.UI.Components.ApiScopes.List
                 Status = !apiScope.Enabled
             });
 
-            if(sendResult.Result == Core.AjaxResultTypes.Success)
+            if (sendResult.Result == Core.AjaxResultTypes.Success)
             {
                 apiScope.Enabled = !apiScope.Enabled;
 
                 Snackbar!.Add("Статус изменён", Severity.Success);
+            }
+            else
+            {
+                Snackbar?.Add($"{apiScope.Name} - {sendResult.Message}", Severity.Error);
             }
 
             OverlayEnabled = false;
@@ -122,7 +126,7 @@ namespace ID.UI.Components.ApiScopes.List
                     var removeResult = await ApiScopeService!.RemoveAsync(scope.Id);
                     if(removeResult.Result == Core.AjaxResultTypes.Error)
                     {
-                        Snackbar!.Add($"Не удалось удалить область - {scope.Name}", Severity.Error);
+                        Snackbar!.Add($"{scope.Name} - {removeResult.Message}", Severity.Error);
                     }
                     else
                     {

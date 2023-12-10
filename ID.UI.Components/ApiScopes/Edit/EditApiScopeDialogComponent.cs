@@ -84,7 +84,7 @@ namespace ID.UI.Components.ApiScopes.Edit
                 }
                 else
                 {
-                    Snackbar!.Add("Не удалось сохранить данные области", Severity.Error);
+                    Snackbar!.Add(requestResult.Message, Severity.Error);
                 }
 
                 OverlayEnabled = false;
