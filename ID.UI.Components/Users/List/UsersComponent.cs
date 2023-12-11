@@ -53,6 +53,7 @@ namespace ID.UI.Components.Users.List
             var sendResult = await UserService!.GetAsync(Filter);
             if(sendResult.Result == Core.AjaxResultTypes.Success && sendResult.Data != null)
             {
+                _users.Clear();
                 _users.AddRange(sendResult.Data);
             }
 

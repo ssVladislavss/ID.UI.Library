@@ -70,10 +70,6 @@ namespace ID.UI.Components.Users.Create
             {
                 _roles.AddRange(rolesResult.Data);
             }
-            else
-            {
-                ChangeInitializeStatus();
-            }
 
             ChangeOverlayStatus();
         }
@@ -86,10 +82,6 @@ namespace ID.UI.Components.Users.Create
             if(clientsResult.Result == Core.AjaxResultTypes.Success && clientsResult.Data != null)
             {
                 _clients.AddRange(clientsResult.Data);
-            }
-            else
-            {
-                ChangeInitializeStatus();
             }
 
             ChangeOverlayStatus();

@@ -11,15 +11,17 @@
         </MudButton>
     }
 
-    <MudFab Color="Color.Primary"
-            StartIcon="@Icons.Material.Outlined.Filter"
-            Size="Size.Large"
-            OnClick="() => FilterVisible = !FilterVisible" />
+    <MudStack Row="true">
+        <MudFab Color="Color.Primary"
+                StartIcon="@Icons.Material.Outlined.Filter"
+                Size="Size.Large"
+                OnClick="() => FilterVisible = !FilterVisible" />
 
-    <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Create"
-               Style="width: 200px; max-height: 100px;" Color="Color.Primary" OnClick="ShowCreateUserDialogAsync">
-        Зарегистрировать нового пользователя
-    </MudButton>
+        <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Create"
+                   Style="width: 200px; max-height: 100px;" Color="Color.Primary" OnClick="ShowCreateUserDialogAsync">
+            Зарегистрировать нового пользователя
+        </MudButton>
+    </MudStack>
 </MudStack>
 
     <MudTable @ref="UsersTable"
