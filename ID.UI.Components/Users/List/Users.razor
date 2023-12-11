@@ -11,13 +11,18 @@
         </MudButton>
     }
 
+    <MudFab Color="Color.Primary"
+            StartIcon="@Icons.Material.Outlined.Filter"
+            Size="Size.Large"
+            OnClick="() => FilterVisible = !FilterVisible" />
+
     <MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Create"
                Style="width: 200px; max-height: 100px;" Color="Color.Primary" OnClick="ShowCreateUserDialogAsync">
         Зарегистрировать нового пользователя
     </MudButton>
 </MudStack>
 
-<MudTable @ref="UsersTable"
+    <MudTable @ref="UsersTable"
           Loading="OverlayEnabled"
           T="ID.UI.Core.Users.UserModel"
           Items="@Users"
@@ -25,18 +30,18 @@
           @bind-SelectedItems="SelectedUsers"
           Hover="true" SelectOnRowClick="false">
 
-    <HeaderContent>
-        <MudTh>Идентификатор</MudTh>
-        <MudTh>Наименование</MudTh>
-        <MudTh>Роли</MudTh>
-    </HeaderContent>
+        <HeaderContent>
+            <MudTh>Идентификатор</MudTh>
+            <MudTh>Наименование</MudTh>
+            <MudTh>Роли</MudTh>
+        </HeaderContent>
+        
+        <NoRecordsContent>
+            <MudText Typo="Typo.body1">Пока нет ниодной записи</MudText>
+        </NoRecordsContent>
 
-    <NoRecordsContent>
-        <MudText Typo="Typo.body1">Пока нет ниодной записи</MudText>
-    </NoRecordsContent>
-
-    <RowTemplate>
-        <MudTd DataLabel="Идентификатор">@context.Id</MudTd>
+        <RowTemplate>
+            <MudTd DataLabel="Идентификатор">@context.Id</MudTd>
             <MudTd DataLabel="Наименование">@context.Email</MudTd>
             <MudTd DataLabel="Роли">@string.Join(',', context.Roles.Select(x => $" {x.RoleName}")).TrimEnd(',', ' ')</MudTd>
             <MudTd>
@@ -52,3 +57,45 @@
             <MudTablePager PageSizeOptions="new int[]{50, 100}" />
         </PagerContent>
     </MudTable>
+
+    <MudDialog @bind-IsVisible="FilterVisible" Options="new DialogOptions { CloseButton = true, CloseOnEscapeKey = false, DisableBackdropClick = true, MaxWidth = MaxWidth.Small, FullWidth = true }">
+        <TitleContent>
+            <MudText Typo="Typo.h6">
+                <MudIcon Icon="@Icons.Material.Filled.Filter1" Color="Color.Primary" Class="mr-3 mb-n1" />
+                Установите необходимые фильтры
+            </MudText>
+        </TitleContent>
+
+        <DialogContent>
+            <MudContainer MaxWidth="MaxWidth.Medium">
+                <MudTextField @bind-Value="@Filter.LastName"
+                              Label="Фамилия"
+                              AutoFocus="true"
+                              Immediate="true"
+                              T="string"
+                              InputMode="InputMode.text"
+                              InputType="InputType.Text" />
+                <MudTextField @bind-Value="@Filter.FirstName"
+                              Label="Имя"
+                              AutoFocus="true"
+                              Immediate="true"
+                              T="string"
+                              InputMode="InputMode.text"
+                              InputType="InputType.Text" />
+                <MudTextField @bind-Value="@Filter.SecondName"
+                              Label="Отчество"
+                              AutoFocus="true"
+                              Immediate="true"
+                              T="string"
+                              InputMode="InputMode.text"
+                              InputType="InputType.Text" />
+            </MudContainer>
+        </DialogContent>
+        <DialogActions>
+            <MudSpacer />
+            <MudButton Color="Color.Primary"
+                       OnClick="GetUsersAsync"
+                       Variant="Variant.Filled"
+                       EndIcon="@Icons.Material.Outlined.Update">Применить</MudButton>
+        </DialogActions>
+    </MudDialog>

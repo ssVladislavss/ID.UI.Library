@@ -23,6 +23,10 @@ namespace ID.UI.Components.Users.List
 
         protected HashSet<UserModel> SelectedUsers { get; set; } = new HashSet<UserModel>();
         protected MudTable<UserModel> UsersTable { get; set; } = new MudTable<UserModel>();
+        protected UserSearchFilter Filter { get; set; } = new UserSearchFilter();
+        protected bool FilterVisible { get; set; }
+
+        [Parameter] public RenderFragment<UserSearchFilter>? FilterBodyContent { get; set; }
 
         protected override async Task OnParametersSetAsync()
         {
@@ -46,7 +50,7 @@ namespace ID.UI.Components.Users.List
         {
             ChangeOverlayStatus();
 
-            var sendResult = await UserService!.GetAsync(new UserSearchFilter());
+            var sendResult = await UserService!.GetAsync(Filter);
             if(sendResult.Result == Core.AjaxResultTypes.Success && sendResult.Data != null)
             {
                 _users.AddRange(sendResult.Data);

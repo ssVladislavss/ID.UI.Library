@@ -34,7 +34,10 @@
                           T="string"
                           InputMode="InputMode.text"
                           Immediate="true"
-                          InputType="InputType.Password"/>
+                          Adornment="Adornment.End"
+                          AdornmentIcon="@Icons.Material.Outlined.RemoveRedEye"
+                          OnAdornmentClick="() => PasswordFieldType = PasswordFieldType == InputType.Password ? InputType.Text : InputType.Password"
+                          InputType="PasswordFieldType" />
         </MudForm>
 
         <MudCheckBox @bind-Checked="@Model.RememberMe"

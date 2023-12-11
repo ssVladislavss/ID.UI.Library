@@ -30,13 +30,13 @@ namespace ID.UI.Core.State
             _apiOptions = apiDescriptor?.Value ?? new ApiOptions();
         }
 
-        public async Task<ClaimsPrincipal> AuthenticateAsync(StateModel data)
+        public async Task<AjaxResult<ClaimsPrincipal>> AuthenticateAsync(StateModel data)
         {
             if (data == null)
-                return new ClaimsPrincipal();
+                return AjaxResult<ClaimsPrincipal>.Error("Укажите данные для входа");
 
             if (string.IsNullOrEmpty(data.Email) || string.IsNullOrEmpty(data.Password))
-                return new ClaimsPrincipal();
+                return AjaxResult<ClaimsPrincipal>.Error("Укажите данные для входа");
 
             using var client = _httpClientFactory.CreateClient();
 
@@ -52,7 +52,7 @@ namespace ID.UI.Core.State
 
             if (authenticateResult.IsError)
             {
-                return new ClaimsPrincipal();
+                return AjaxResult<ClaimsPrincipal>.Error("Неверный логин или пароль");
             }
 
             var identity = new JwtSecurityTokenHandler().ReadJwtToken(authenticateResult.AccessToken);
@@ -68,7 +68,7 @@ namespace ID.UI.Core.State
 
             var claimsIdentity = new ClaimsIdentity(identity.Claims, identity.Issuer, JwtClaimTypes.Name, JwtClaimTypes.Role);
 
-            return new ClaimsPrincipal(claimsIdentity);
+            return AjaxResult<ClaimsPrincipal>.Success(new ClaimsPrincipal(claimsIdentity));
         }
 
         public async Task<ClaimsPrincipal> CurrentStateAsync()
@@ -92,10 +92,7 @@ namespace ID.UI.Core.State
                         ClientSecret = _stateOptions.ClientSecret,
                     });
 
-                    if (refreshResult.IsError)
-                        return new ClaimsPrincipal();
-
-                    if (!string.IsNullOrEmpty(refreshResult.AccessToken))
+                    if (!string.IsNullOrEmpty(refreshResult.AccessToken) && !refreshResult.IsError)
                     {
                         currentState = new StorageStateModel(refreshResult.AccessToken,
                                                              DateTime.Now.AddSeconds(refreshResult.ExpiresIn).AddMinutes(-5),
@@ -103,8 +100,6 @@ namespace ID.UI.Core.State
 
                         await _localStorageService.SetItemAsync(StorageStateKey, currentState);
                     }
-                    else
-                        return new ClaimsPrincipal();
                 }
 
                 await _localStorageService.RemoveItemAsync(StorageStateKey);

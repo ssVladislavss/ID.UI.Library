@@ -27,6 +27,7 @@ namespace ID.UI.Components.Base
         [Inject] protected IDialogService? DialogService { get; set; }
 
         protected bool OverlayEnabled { get; set; }
+        protected bool InitializeError { get; set; }
 
         protected ClaimsPrincipal CurrentUser { get; set; } = new ClaimsPrincipal();
 
@@ -105,6 +106,15 @@ namespace ID.UI.Components.Base
                 OverlayEnabled = status.Value;
             else
                 OverlayEnabled = !OverlayEnabled;
+
+            StateHasChanged();
+        }
+        protected virtual void ChangeInitializeStatus(bool? status = null)
+        {
+            if(status.HasValue)
+                InitializeError = status.Value;
+            else
+                InitializeError = !InitializeError;
 
             StateHasChanged();
         }

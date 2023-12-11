@@ -13,9 +13,7 @@ namespace ID.UI.Components.Authenticate.Logout
 
         protected override async Task OnTokenErrorAsync(HttpStatusCode? statusCode = null)
         {
-            OverlayEnabled = true;
-
-            StateHasChanged();
+            ChangeOverlayStatus();
 
             await base.OnTokenErrorAsync(statusCode);
         }

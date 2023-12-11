@@ -6,13 +6,18 @@
             <MudIcon Icon="@Icons.Material.Filled.Create" Color="Color.Primary" Class="mr-3 mb-n1" />
             Форма регистрации пользователя
         </MudText>
-        @* @if (!Roles.Any())
+        @if (InitializeError)
         {
             <MudText Typo="Typo.body1" Color="Color.Warning">
                 <MudIcon Icon="@Icons.Material.Filled.Warning" Class="mr-3 mb-n1" />
                 Не удалось загрузить доступные роли, обновите страницу или попробуйте позднее
             </MudText>
-        } *@
+
+            <MudText Typo="Typo.body1" Color="Color.Warning">
+                <MudIcon Icon="@Icons.Material.Filled.Warning" Class="mr-3 mb-n1" />
+                Не удалось загрузить доступные приложения, обновите страницу или попробуйте позднее
+            </MudText>
+        }
     </TitleContent>
 
     <DialogContent>
