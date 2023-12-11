@@ -79,6 +79,19 @@
                         }
                     </MudSelect>
 
+                    <MudSelect @bind-Value="Model.ClientId"
+                               AnchorOrigin="Origin.BottomCenter"
+                               T="string"
+                               Clearable="true"
+                               Delimiter=", "
+                               Label="Приложение"
+                               HelperText="Выберите приложение от лица которого будет зарегистрирован пользователь">
+                        @foreach (var client in Clients)
+                        {
+                            <MudSelectItem Value="@client.ClientId">@client.ClientName</MudSelectItem>
+                        }
+                    </MudSelect>
+
                     <MudTextField @bind-Value="@Model.Password"
                                   Label="Ваш пароль"
                                   Immediate="true"

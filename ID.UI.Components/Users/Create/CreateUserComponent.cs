@@ -3,6 +3,7 @@ using ID.UI.Core.Roles;
 using ID.UI.Core.Users;
 using ID.UI.Core.Users.Models;
 using ID.UI.ViewModel.Users;
+using IdentityServer4.Models;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -11,6 +12,7 @@ namespace ID.UI.Components.Users.Create
     public class CreateUserComponent : IDBaseComponent
     {
         private List<RoleModel> _roles = new List<RoleModel>();
+        private List<Client> _clients = new List<Client>();
 
         [CascadingParameter] protected MudDialogInstance? Instance { get; set; }
         [Parameter] public Action<UserModel>? CreatedUserCallback { get; set; }
@@ -24,6 +26,14 @@ namespace ID.UI.Components.Users.Create
                     yield return role;
             }
         }
+        protected IEnumerable<Client> Clients
+        {
+            get
+            {
+                foreach (var client in _clients)
+                    yield return client;
+            }
+        }
         protected CreateUserViewModel Model { get; set; } = new CreateUserViewModel();
         protected MudForm ModelForm { get; set; } = new MudForm();
         protected CreateUserResultModel? CreatedUser { get; set; }
@@ -34,6 +44,8 @@ namespace ID.UI.Components.Users.Create
                 throw new ArgumentNullException(nameof(UserService));
             if(RoleService is null)
                 throw new ArgumentNullException(nameof(RoleService));
+            if(ClientService is null)
+                throw new ArgumentNullException(nameof(ClientService));
 
             await base.OnParametersSetAsync();
         }
@@ -43,6 +55,7 @@ namespace ID.UI.Components.Users.Create
             if (firstRender)
             {
                 await GetRolesAsync();
+                await GetClientsAsync();
             }
 
             await base.OnAfterRenderAsync(firstRender);
@@ -56,6 +69,19 @@ namespace ID.UI.Components.Users.Create
             if (rolesResult.Result == Core.AjaxResultTypes.Success && rolesResult.Data != null)
             {
                 _roles.AddRange(rolesResult.Data);
+            }
+
+            ChangeOverlayStatus();
+        }
+
+        protected virtual async Task GetClientsAsync()
+        {
+            ChangeOverlayStatus();
+
+            var clientsResult = await ClientService!.GetAsync(new Core.Clients.ClientSearchFilter());
+            if(clientsResult.Result == Core.AjaxResultTypes.Success && clientsResult.Data != null)
+            {
+                _clients.AddRange(clientsResult.Data);
             }
 
             ChangeOverlayStatus();
@@ -76,7 +102,8 @@ namespace ID.UI.Components.Users.Create
                     FirstName = Model.FirstName,
                     LastName = Model.LastName,
                     RoleNames = Model.RoleNames,
-                    SecondName = Model.SecondName
+                    SecondName = Model.SecondName,
+                    ClientId = Model.ClientId,
                 });
 
                 if(createdResult.Result == Core.AjaxResultTypes.Success && createdResult.Data != null)
