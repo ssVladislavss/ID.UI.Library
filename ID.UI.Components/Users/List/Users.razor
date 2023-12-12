@@ -35,8 +35,8 @@
         <HeaderContent>
             <MudTh>Идентификатор</MudTh>
             <MudTh>Наименование</MudTh>
-            <MudTh>Статус</MudTh>
             <MudTh>Роли</MudTh>
+            <MudTh>Статус</MudTh>
         </HeaderContent>
         
         <NoRecordsContent>
@@ -52,7 +52,7 @@
                 {
                     <MudChip Size="Size.Small" Label="true" Color="Color.Primary" Variant="Variant.Text" OnClick="() => SetLockoutEnabledAsync(context)">Активен</MudChip>
                 }
-                else
+                else if(context.LockedEndDate.HasValue)
                 {
                     <MudStack Spacing="2">
                         <MudChip Size="Size.Small"
@@ -66,6 +66,14 @@
                                  Disabled="true"
                                  Variant="Variant.Text">до @context.LockedEndDate!.Value.LocalDateTime.ToString("g")</MudChip>
                     </MudStack>
+                }
+                else
+                {
+                    <MudChip Size="Size.Small"
+                             Label="true"
+                             Color="Color.Error"
+                             Variant="Variant.Text"
+                             OnClick="() => SetLockoutEnabledAsync(context)">Заблокирован</MudChip>
                 }
             </MudTd>
             <MudTd>
