@@ -9,5 +9,6 @@ namespace ID.UI.Core.Users.Abstractions
         Task<AjaxResult<CreateUserResultModel>> CreateAsync(CreateUserModel data);
         Task<AjaxResult> UpdateAsync(EditUserModel data);
         Task<AjaxResult> DeleteAsync(string userId);
+        Task<AjaxResult<DateTimeOffset?>> SetLockoutEnabledAsync(SetLockoutEnabledModel data);
     }
 }

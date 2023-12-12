@@ -93,6 +93,26 @@ namespace ID.UI.Core.Users
             return result;
         }
 
+        public async Task<AjaxResult<DateTimeOffset?>> SetLockoutEnabledAsync(SetLockoutEnabledModel data)
+        {
+            string? accessToken = await OnGetTokenAsync();
+
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                await OnTokenErrorAsync();
+
+                return AjaxResult<DateTimeOffset?>.Error("Необходимо авторизоваться");
+            }
+
+            _userProvider.WithAccessToken(accessToken);
+
+            var result = await _userProvider.SetLockoutEnabledAsync(data);
+
+            await CheckStatusCodeAsync(result.StatusCode);
+
+            return result;
+        }
+
         public async Task<AjaxResult> UpdateAsync(EditUserModel data)
         {
             string? accessToken = await OnGetTokenAsync();

@@ -15,6 +15,8 @@ namespace ID.UI.Core.Users
         public string? FirstName { get; set; }
         public string? SecondName { get; set; }
         public DateTime? BirthDate { get; set; }
+        public bool IsLocked { get; set; }
+        public DateTimeOffset? LockedEndDate { get; set; }
         public IEnumerable<RoleModel> Roles { get; set; } = Enumerable.Empty<RoleModel>();
         public IEnumerable<ClaimModel> Claims { get; set; } = Enumerable.Empty<ClaimModel>();
     }

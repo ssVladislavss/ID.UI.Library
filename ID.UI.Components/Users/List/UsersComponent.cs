@@ -84,6 +84,31 @@ namespace ID.UI.Components.Users.List
             }
         }
 
+        protected virtual async Task SetLockoutEnabledAsync(UserModel user)
+        {
+            ChangeOverlayStatus();
+
+            var requestModel = new SetLockoutEnabledModel
+            {
+                UserId = user.Id,
+                Enabled = !user.IsLocked
+            };
+
+            var setLockoutEnabledResult = await UserService!.SetLockoutEnabledAsync(requestModel);
+            if(setLockoutEnabledResult.Result == Core.AjaxResultTypes.Success)
+            {
+                user.IsLocked = !user.IsLocked;
+                user.LockedEndDate = setLockoutEnabledResult.Data;
+                Snackbar?.Add($"{user.Email} - {(!user.IsLocked ? "аккаунт разблокирован" : "аккаунт заблокирован")}", Severity.Success);
+            }
+            else
+            {
+                Snackbar?.Add(setLockoutEnabledResult.Message, Severity.Error);
+            }
+
+            ChangeOverlayStatus();
+        }
+
         protected virtual async Task ShowCreateUserDialogAsync()
         {
             var dialogReference = await DialogService!.ShowAsync<CreateUserDialog>("", new DialogParameters

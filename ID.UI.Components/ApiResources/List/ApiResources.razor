@@ -41,14 +41,14 @@
             <MudTd DataLabel="Наименование">@context.Name</MudTd>
             <MudTd DataLabel="Статус">
                 @if (context.Enabled)
-            {
-                <MudChip Size="Size.Small" Label="true" Color="Color.Success" Variant="Variant.Text" OnClick="() => EditResourceStatusAsync(context)">Активна</MudChip>
-            }
-            else
-            {
-                <MudChip Size="Size.Small" Label="true" Color="Color.Error" Variant="Variant.Text" OnClick="() => EditResourceStatusAsync(context)">Отключена</MudChip>
-            }
-        </MudTd>
+                {
+                    <MudChip Size="Size.Small" Label="true" Color="Color.Success" Variant="Variant.Text" OnClick="() => EditResourceStatusAsync(context)">Активна</MudChip>
+                }
+                else
+                {
+                    <MudChip Size="Size.Small" Label="true" Color="Color.Error" Variant="Variant.Text" OnClick="() => EditResourceStatusAsync(context)">Отключена</MudChip>
+                }
+            </MudTd>
         <MudTd>
             <MudFab StartIcon="@Icons.Material.Filled.EditNote"
                     Size="Size.Medium"

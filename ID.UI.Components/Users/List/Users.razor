@@ -35,6 +35,7 @@
         <HeaderContent>
             <MudTh>Идентификатор</MudTh>
             <MudTh>Наименование</MudTh>
+            <MudTh>Статус</MudTh>
             <MudTh>Роли</MudTh>
         </HeaderContent>
         
@@ -46,6 +47,27 @@
             <MudTd DataLabel="Идентификатор">@context.Id</MudTd>
             <MudTd DataLabel="Наименование">@context.Email</MudTd>
             <MudTd DataLabel="Роли">@string.Join(',', context.Roles.Select(x => $" {x.RoleName}")).TrimEnd(',', ' ')</MudTd>
+            <MudTd DataLabel="Статус">
+                @if (!context.IsLocked)
+                {
+                    <MudChip Size="Size.Small" Label="true" Color="Color.Primary" Variant="Variant.Text" OnClick="() => SetLockoutEnabledAsync(context)">Активен</MudChip>
+                }
+                else
+                {
+                    <MudStack Spacing="2">
+                        <MudChip Size="Size.Small"
+                                 Label="true"
+                                 Color="Color.Error"
+                                 Variant="Variant.Text"
+                                 OnClick="() => SetLockoutEnabledAsync(context)">Заблокирован</MudChip>
+                        <MudChip Size="Size.Small"
+                                 Label="true"
+                                 Color="Color.Default"
+                                 Disabled="true"
+                                 Variant="Variant.Text">до @context.LockedEndDate!.Value.LocalDateTime.ToString("g")</MudChip>
+                    </MudStack>
+                }
+            </MudTd>
             <MudTd>
                 <MudFab StartIcon="@Icons.Material.Filled.EditNote"
                         Size="Size.Medium"

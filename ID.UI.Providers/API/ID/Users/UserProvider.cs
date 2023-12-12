@@ -186,5 +186,36 @@ namespace ID.UI.Providers.API.ID.Users
                 return AjaxResult.Error("Произошла неизвестная ошибка");
             }
         }
+
+        public async Task<AjaxResult<DateTimeOffset?>> SetLockoutEnabledAsync(SetLockoutEnabledModel data)
+        {
+            using var client = _httpClientFactory.CreateClient();
+            client.SetBearerToken(this._accessToken);
+
+            try
+            {
+                var sendResult = await client.PutAsJsonAsync(_apiOptions.IDUrl.AbsoluteUri + "api/user/set/lockout", data);
+
+                if (sendResult.StatusCode == System.Net.HttpStatusCode.Unauthorized ||
+                   sendResult.StatusCode == System.Net.HttpStatusCode.Forbidden)
+                {
+                    return AjaxResult<DateTimeOffset?>.Error("Доступ запрещён", sendResult.StatusCode);
+                }
+
+                sendResult.EnsureSuccessStatusCode();
+
+                var result = JsonConvert.DeserializeObject<AjaxResult<DateTimeOffset?>>
+                    (await sendResult.Content.ReadAsStringAsync());
+
+                if (result == null)
+                    return AjaxResult<DateTimeOffset?>.Error("Не удалось установить статус аккаунта");
+
+                return result;
+            }
+            catch
+            {
+                return AjaxResult<DateTimeOffset?>.Error("Произошла неизвестная ошибка");
+            }
+        }
     }
 }
