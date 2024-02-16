@@ -69,6 +69,15 @@
                                   InputMode="InputMode.text"
                                   InputType="InputType.Text" />
 
+                    <MudTextField @bind-Value="Model.BirthDate"
+                                  T="DateTime?"
+                                  Format="yyyy-MM-dd"
+                                  Label="Дата рождения"
+                                  InputType="InputType.Date"
+                                  Immediate="true"
+                                  For="() => Model.BirthDate"
+                                  Validation="Model.Validator.IsValid" />
+
                     <MudSelect SelectedValues="Model.RoleNames"
                                AnchorOrigin="Origin.BottomCenter"
                                T="string"

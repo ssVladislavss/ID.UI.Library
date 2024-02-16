@@ -104,6 +104,7 @@ namespace ID.UI.Components.Users.Create
                     RoleNames = Model.RoleNames,
                     SecondName = Model.SecondName,
                     ClientId = Model.ClientId,
+                    BirthDate = Model.BirthDate,
                 });
 
                 if(createdResult.Result == Core.AjaxResultTypes.Success && createdResult.Data != null)

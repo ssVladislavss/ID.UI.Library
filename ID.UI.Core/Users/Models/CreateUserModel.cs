@@ -9,6 +9,7 @@
         public string? LastName { get; set; }
         public string? FirstName { get; set; }
         public string? SecondName { get; set; }
+        public DateTime? BirthDate { get; set; }
 
         public List<string> RoleNames { get; set; } = new List<string>();
     }

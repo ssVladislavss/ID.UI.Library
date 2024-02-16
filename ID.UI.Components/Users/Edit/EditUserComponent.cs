@@ -44,7 +44,8 @@ namespace ID.UI.Components.Users.Edit
                     LastName = CurrentIDUser.LastName,
                     SecondName = CurrentIDUser.SecondName,
                     UserId = CurrentIDUser.Id,
-                    RoleNames = CurrentIDUser.Roles.Select(x => x.RoleName).ToList()
+                    RoleNames = CurrentIDUser.Roles.Select(x => x.RoleName).ToList(),
+                    BirthDate = CurrentIDUser.BirthDate,
                 };
             }
 
@@ -90,7 +91,8 @@ namespace ID.UI.Components.Users.Edit
                     LastName = Model.LastName,
                     SecondName = Model.SecondName,
                     UserId = Model.UserId,
-                    RoleNames = Model.RoleNames
+                    RoleNames = Model.RoleNames,
+                    BirthDate = Model.BirthDate,
                 };
 
                 var updatedResult = await UserService!.UpdateAsync(requestModel);
