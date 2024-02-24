@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using ID.UI.ViewModel.Users;
 
 namespace ID.UI.ViewModel.Users.Validators
 {

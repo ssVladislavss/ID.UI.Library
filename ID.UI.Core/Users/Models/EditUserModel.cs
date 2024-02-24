@@ -1,4 +1,5 @@
 ﻿using ID.UI.Core.Claims.Models;
+using OnlineSales.Access.Data;
 
 namespace ID.UI.Core.Users.Models
 {
@@ -12,5 +13,6 @@ namespace ID.UI.Core.Users.Models
 
         public IEnumerable<string> RoleNames { get; set; } = Enumerable.Empty<string>();
         public IEnumerable<ClaimModel> Claims { get; set; } = Enumerable.Empty<ClaimModel>();
+        public IEnumerable<Functional> AvailableFunctionality { get; set; } = Enumerable.Empty<Functional>();
     }
 }

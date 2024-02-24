@@ -46,6 +46,7 @@ namespace ID.UI.Components.Users.Edit
                     UserId = CurrentIDUser.Id,
                     RoleNames = CurrentIDUser.Roles.Select(x => x.RoleName).ToList(),
                     BirthDate = CurrentIDUser.BirthDate,
+                    AvailableFunctionality = CurrentIDUser.AvailableFunctionality.ToList()
                 };
             }
 
@@ -93,6 +94,7 @@ namespace ID.UI.Components.Users.Edit
                     UserId = Model.UserId,
                     RoleNames = Model.RoleNames,
                     BirthDate = Model.BirthDate,
+                    AvailableFunctionality = Model.AvailableFunctionality
                 };
 
                 var updatedResult = await UserService!.UpdateAsync(requestModel);

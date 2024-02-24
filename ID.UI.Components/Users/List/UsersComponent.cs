@@ -140,7 +140,7 @@ namespace ID.UI.Components.Users.List
                 CloseOnEscapeKey = false,
                 DisableBackdropClick = true,
                 FullWidth = true,
-                MaxWidth = MaxWidth.Small
+                MaxWidth = MaxWidth.Medium
             });
 
             var dialogResult = await dialogReference.Result;
@@ -153,6 +153,7 @@ namespace ID.UI.Components.Users.List
                     editingUser.SecondName = updatedUser.SecondName;
                     editingUser.Roles = updatedUser.RoleNames.Select(x => new Core.Roles.RoleModel { RoleName = x });
                     editingUser.Claims = updatedUser.Claims;
+                    editingUser.AvailableFunctionality = updatedUser.AvailableFunctionality;
                 }
         }
     }

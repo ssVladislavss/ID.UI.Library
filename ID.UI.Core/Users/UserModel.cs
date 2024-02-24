@@ -1,5 +1,6 @@
 ﻿using ID.UI.Core.Claims.Models;
 using ID.UI.Core.Roles;
+using OnlineSales.Access.Data;
 
 namespace ID.UI.Core.Users
 {
@@ -19,5 +20,6 @@ namespace ID.UI.Core.Users
         public DateTimeOffset? LockedEndDate { get; set; }
         public IEnumerable<RoleModel> Roles { get; set; } = Enumerable.Empty<RoleModel>();
         public IEnumerable<ClaimModel> Claims { get; set; } = Enumerable.Empty<ClaimModel>();
+        public IEnumerable<Functional> AvailableFunctionality { get; set; } = Enumerable.Empty<Functional>();
     }
 }
